@@ -11,7 +11,7 @@ class IntroParagraph extends StatelessWidget {
     return Text(
       value,
       style: const TextStyle(
-          fontFamily: "Roboto", fontSize: 21, color: Design.lightGray),
+          fontFamily: "Roboto", fontSize: 14, color: Design.lightGray),
       textAlign: TextAlign.center,
     );
   }

@@ -30,7 +30,7 @@ class IntroScreen extends StatelessWidget {
       color: Design.white,
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 22),
+          padding: const EdgeInsets.symmetric(horizontal: 63),
           child: Column(
             children: [
               const PageTitle(title: "Olá!"),

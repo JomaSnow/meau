@@ -8,12 +8,12 @@ class PageTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+    return Container(
+      margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
       child: Text(
         title,
         style: const TextStyle(
-            color: Design.primaryYellow, fontSize: 96, fontFamily: "Courgette"),
+            color: Design.primaryYellow, fontSize: 64, fontFamily: "Courgette"),
       ),
     );
   }

@@ -10,13 +10,13 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
       child: TextButton(
         onPressed: onPressed,
         style: ButtonStyle(
-          elevation: MaterialStateProperty.all<double>(3.0),
+          elevation: MaterialStateProperty.all<double>(5.0),
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-              const EdgeInsets.symmetric(vertical: 15)),
+              const EdgeInsets.symmetric(vertical: 12)),
           backgroundColor:
               MaterialStateProperty.all<Color>(Design.primaryYellow),
           overlayColor:
@@ -37,7 +37,7 @@ class Button extends StatelessWidget {
             child: Text(
           value,
           style: const TextStyle(
-              color: Design.darkerGray, fontSize: 16, fontFamily: "Roboto"),
+              color: Design.darkerGray, fontSize: 12, fontFamily: "Roboto"),
         )),
       ),
     );
