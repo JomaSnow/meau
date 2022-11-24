@@ -8,3 +8,6 @@ class Design {
   static const lightGray = Color.fromARGB(255, 117, 117, 117); // #757575
   static const darkerGray = Color.fromARGB(255, 67, 67, 67); // #434343
 }
+
+// pra converter pt pra pxl: multiplica por 4 e divide por 3
+// pra converter pt pra pxl: multiplica por 5 e divide por 3
