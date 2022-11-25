@@ -17,7 +17,7 @@ class Input extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(5),
+      margin: const EdgeInsets.fromLTRB(5, 0, 5, 5),
       child: TextFormField(
         obscureText: isPassword,
         controller: controller,

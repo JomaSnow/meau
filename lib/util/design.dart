@@ -10,6 +10,8 @@ class Design {
   static const lighterGray = Color.fromARGB(255, 189, 189, 189); // #bdbdbd
   static const lightestGray = Color.fromARGB(255, 230, 231, 232); // #e6e7e8
   static const darkerGray = Color.fromARGB(255, 67, 67, 67); // #434343
+  static const facebook = Color.fromARGB(255, 25, 79, 124); // #194f7c
+  static const google = Color.fromARGB(255, 241, 95, 92); // #f15f5c
 }
 
 // pra converter pt pra pxl: multiplica por 4 e divide por 3
