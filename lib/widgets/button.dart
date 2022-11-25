@@ -11,7 +11,7 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-      child: TextButton(
+      child: ElevatedButton(
         onPressed: onPressed,
         style: ButtonStyle(
           elevation: MaterialStateProperty.all<double>(5.0),
