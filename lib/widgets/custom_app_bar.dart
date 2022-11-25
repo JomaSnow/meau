@@ -21,7 +21,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final LeadingIcon? leadingIcon;
 
   static _defaultLeadingAction() {
-    log("Pressed leading icon. Remeber to pass a function to leadingAction attribute.");
+    log("Pressed leading icon. Remember to pass a function to leadingAction attribute.");
   }
 
   Widget _drawLeadingIcon(LeadingIcon? icon) {

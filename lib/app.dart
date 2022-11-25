@@ -1,4 +1,4 @@
-import 'package:app/screens/login_screen.dart';
+import 'package:app/screens/intro_screen.dart';
 import 'package:app/util/dismiss_focus.dart';
 import 'package:flutter/material.dart';
 
@@ -11,10 +11,10 @@ class MyApp extends StatelessWidget {
       onTap: () {
         dismissFocus(context);
       },
-      child: MaterialApp(
+      child: const MaterialApp(
         title: "Meau",
         debugShowCheckedModeBanner: false,
-        home: LoginScreen(),
+        home: IntroScreen(),
       ),
     );
   }
