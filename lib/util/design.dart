@@ -1,7 +1,9 @@
 import 'package:flutter/animation.dart';
 
 class Design {
-  static const white = Color.fromARGB(255, 250, 250, 250); // #fafafa
+  static const white = Color.fromARGB(255, 255, 255, 255); // #ffffff
+  static const white1 = Color.fromARGB(255, 250, 250, 250); // #fafafa
+  static const white2 = Color.fromARGB(255, 247, 247, 247); // #f7f7f7
   static const black = Color.fromARGB(255, 0, 0, 0); // #000000
   static const primaryYellow = Color.fromARGB(255, 255, 211, 88); // #ffd358
   static const lightBlue = Color.fromARGB(255, 136, 201, 191); // #88c9bf
