@@ -1,11 +1,21 @@
-import 'package:app/screens/intro_screen.dart';
-import 'package:flutter/widgets.dart';
+import 'package:app/screens/login_screen.dart';
+import 'package:app/util/dismiss_focus.dart';
+import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const IntroScreen();
+    return GestureDetector(
+      onTap: () {
+        dismissFocus(context);
+      },
+      child: MaterialApp(
+        title: "Meau",
+        debugShowCheckedModeBanner: false,
+        home: LoginScreen(),
+      ),
+    );
   }
 }
