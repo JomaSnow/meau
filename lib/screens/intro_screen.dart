@@ -3,7 +3,8 @@ import 'dart:developer';
 import 'package:app/util/design.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/custom_app_bar.dart';
-import 'package:app/widgets/intro_paragraph.dart';
+import 'package:app/widgets/custom_drawer.dart';
+import 'package:app/widgets/custom_paragraph.dart';
 import 'package:app/widgets/link_button.dart';
 import 'package:app/widgets/page_title.dart';
 import 'package:app/widgets/scrollable_container.dart';
@@ -38,7 +39,7 @@ class IntroScreen extends StatelessWidget {
         resizeToAvoidBottomInset: true,
         appBar: const CustomAppBar(
             iconsColor: Design.lightBlue, transparentBackground: true),
-        drawer: const Drawer(),
+        drawer: const CustomDrawer(),
         body: ScrollableContainer(
           horizontalPadding: 63,
           child: Column(
@@ -48,11 +49,11 @@ class IntroScreen extends StatelessWidget {
               const PageTitle(title: "Olá!"),
               Column(
                 children: const [
-                  IntroParagraph(value: "Bem-vindo ao Meau!"),
-                  IntroParagraph(
+                  CustomParagraph(value: "Bem-vindo ao Meau!"),
+                  CustomParagraph(
                       value:
                           "Aqui você pode adotar, doar e ajudar cães e gatos com facilidade."),
-                  IntroParagraph(value: "Qual o seu interesse?"),
+                  CustomParagraph(value: "Qual o seu interesse?"),
                 ],
               ),
               Column(
