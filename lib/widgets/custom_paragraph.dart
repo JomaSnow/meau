@@ -1,8 +1,8 @@
 import 'package:app/util/design.dart';
 import 'package:flutter/widgets.dart';
 
-class IntroParagraph extends StatelessWidget {
-  const IntroParagraph({super.key, required this.value});
+class CustomParagraph extends StatelessWidget {
+  const CustomParagraph({super.key, required this.value});
 
   final String value;
 

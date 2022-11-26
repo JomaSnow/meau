@@ -2,8 +2,12 @@ import 'dart:developer';
 
 import 'package:app/util/design.dart';
 import 'package:app/widgets/button.dart';
-import 'package:app/widgets/intro_paragraph.dart';
+import 'package:app/widgets/custom_app_bar.dart';
+import 'package:app/widgets/custom_drawer.dart';
+import 'package:app/widgets/custom_paragraph.dart';
+import 'package:app/widgets/link_button.dart';
 import 'package:app/widgets/page_title.dart';
+import 'package:app/widgets/scrollable_container.dart';
 import 'package:flutter/material.dart';
 
 class IntroScreen extends StatelessWidget {
@@ -24,42 +28,65 @@ class IntroScreen extends StatelessWidget {
     return;
   }
 
+  void _login() {
+    log("login");
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: Container(
-        constraints: const BoxConstraints.expand(),
-        color: Design.white,
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 63),
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                const PageTitle(title: "Olá!"),
-                const IntroParagraph(value: "Bem-vindo ao Meau!"),
-                const IntroParagraph(
-                    value:
-                        "Aqui você pode adotar, doar e ajudar cães e gatos com facilidade."),
-                const IntroParagraph(value: "Qual o seu interesse?"),
-                Button(
-                  value: "ADOTAR",
-                  onPressed: _adoptFunction,
+        resizeToAvoidBottomInset: true,
+        appBar: const CustomAppBar(
+            iconsColor: Design.lightBlue, transparentBackground: true),
+        drawer: const CustomDrawer(),
+        body: ScrollableContainer(
+          horizontalPadding: 63,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const PageTitle(title: "Olá!"),
+              Column(
+                children: const [
+                  CustomParagraph(value: "Bem-vindo ao Meau!"),
+                  CustomParagraph(
+                      value:
+                          "Aqui você pode adotar, doar e ajudar cães e gatos com facilidade."),
+                  CustomParagraph(value: "Qual o seu interesse?"),
+                ],
+              ),
+              Column(
+                children: [
+                  Button(
+                    value: "ADOTAR",
+                    onPressed: _adoptFunction,
+                  ),
+                  Button(
+                    value: "AJUDAR",
+                    onPressed: _helpFunction,
+                  ),
+                  Button(
+                    value: "CADASTRAR ANIMAL",
+                    onPressed: _registerFunction,
+                  ),
+                ],
+              ),
+              LinkButton(
+                value: "login",
+                onPressed: _login,
+                width: 80,
+              ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 32),
+                child: Image.asset(
+                  "lib/assets/images/Meau_marca_2.png",
+                  color: Design.lightBlue,
+                  width: 122,
                 ),
-                Button(
-                  value: "AJUDAR",
-                  onPressed: _helpFunction,
-                ),
-                Button(
-                  value: "CADASTRAR ANIMAL",
-                  onPressed: _registerFunction,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
