@@ -1,4 +1,6 @@
 import 'package:app/util/design.dart';
+import 'package:app/widgets/drawer_dropdown_item.dart';
+import 'package:app/widgets/drawer_item.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -13,6 +15,71 @@ class _CustomDrawerState extends State<CustomDrawer> {
   double? _shortcutsListHeight = 0;
   double? _infoListHeight = 0;
   double? _settingsListHeight = 0;
+
+  bool _userToggled = true;
+  bool _shortcutsToggled = false;
+  bool _infoToggled = false;
+  bool _settingsToggled = false;
+
+  void _toggleUserDropdown() {
+    if (_userListHeight != null) {
+      setState(() {
+        _userListHeight = null;
+      });
+    } else {
+      setState(() {
+        _userListHeight = 0;
+      });
+    }
+    setState(() {
+      _userToggled = !_userToggled;
+    });
+  }
+
+  void _toggleShortcutsDropdown() {
+    if (_shortcutsListHeight != null) {
+      setState(() {
+        _shortcutsListHeight = null;
+      });
+    } else {
+      setState(() {
+        _shortcutsListHeight = 0;
+      });
+    }
+    setState(() {
+      _shortcutsToggled = !_shortcutsToggled;
+    });
+  }
+
+  void _toggleInfoDropdown() {
+    if (_infoListHeight != null) {
+      setState(() {
+        _infoListHeight = null;
+      });
+    } else {
+      setState(() {
+        _infoListHeight = 0;
+      });
+    }
+    setState(() {
+      _infoToggled = !_infoToggled;
+    });
+  }
+
+  void _toggleSettingsDropdown() {
+    if (_settingsListHeight != null) {
+      setState(() {
+        _settingsListHeight = null;
+      });
+    } else {
+      setState(() {
+        _settingsListHeight = 0;
+      });
+    }
+    setState(() {
+      _settingsToggled = !_settingsToggled;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,236 +110,117 @@ class _CustomDrawerState extends State<CustomDrawer> {
               ),
             ),
           ),
-          ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  "Prof. Shahmat",
-                  style: TextStyle(
-                      color: Design.darkerGray,
-                      fontSize: 14,
-                      fontFamily: "Roboto",
-                      fontWeight: FontWeight.w500),
-                ),
-                Icon(
-                  Icons.expand_more_rounded,
-                  color: Design.darkerGray,
-                )
-              ],
-            ),
-            onTap: () {
-              if (_userListHeight != null) {
-                setState(() {
-                  _userListHeight = null;
-                });
-              } else {
-                setState(() {
-                  _userListHeight = 0;
-                });
-              }
-            },
-            tileColor: Design.lightBlue,
+          DrawerDropdownItem(
+            onTap: _toggleUserDropdown,
+            color: Design.lightBlue,
+            title: "Prof Shahmat",
+            dropdownToggled: _userToggled,
           ),
           Container(
             height: _userListHeight,
             color: Design.white2,
             child: Column(
-              children: const [
-                ListTile(
-                  title: Text("Item"),
+              children: [
+                DrawerItem(
+                  title: "Meu perfil",
+                  onTap: () {},
                 ),
-                ListTile(
-                  title: Text("Item"),
+                DrawerItem(
+                  title: "Meus pets",
+                  onTap: () {},
                 ),
-                ListTile(
-                  title: Text("Item"),
+                DrawerItem(
+                  title: "Favoritos",
+                  onTap: () {},
                 ),
-                ListTile(
-                  title: Text("Item"),
+                DrawerItem(
+                  title: "Chat",
+                  onTap: () {},
                 ),
               ],
             ),
           ),
-          ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.pets,
-                      color: Design.lightGray,
-                      size: 24,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 20),
-                      child: const Text(
-                        "Atalhos",
-                        style: TextStyle(
-                            color: Design.darkerGray,
-                            fontSize: 14,
-                            fontFamily: "Roboto",
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ],
-                ),
-                const Icon(
-                  Icons.expand_more_rounded,
-                  color: Design.darkerGray,
-                )
-              ],
-            ),
-            tileColor: Design.lightYellow,
-            onTap: () {
-              if (_shortcutsListHeight != null) {
-                setState(() {
-                  _shortcutsListHeight = null;
-                });
-              } else {
-                setState(() {
-                  _shortcutsListHeight = 0;
-                });
-              }
-            },
+          DrawerDropdownItem(
+            onTap: _toggleShortcutsDropdown,
+            color: Design.lightYellow,
+            icon: Icons.pets,
+            title: "Atalhos",
+            dropdownToggled: _shortcutsToggled,
           ),
           Container(
             height: _shortcutsListHeight,
             color: Design.white2,
             child: Column(
-              children: const [
-                ListTile(
-                  title: Text("Item"),
+              children: [
+                DrawerItem(
+                  title: "Cadastrar um pet",
+                  onTap: () {},
                 ),
-                ListTile(
-                  title: Text("Item"),
+                DrawerItem(
+                  title: "Adotar um pet",
+                  onTap: () {},
                 ),
-                ListTile(
-                  title: Text("Item"),
+                DrawerItem(
+                  title: "Ajudar um pet",
+                  onTap: () {},
                 ),
-                ListTile(
-                  title: Text("Item"),
+                DrawerItem(
+                  title: "Apadrinhar um pet",
+                  onTap: () {},
                 ),
               ],
             ),
           ),
-          ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.info,
-                      color: Design.lightGray,
-                      size: 24,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 20),
-                      child: const Text(
-                        "Informações",
-                        style: TextStyle(
-                            color: Design.darkerGray,
-                            fontSize: 14,
-                            fontFamily: "Roboto",
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ],
-                ),
-                const Icon(
-                  Icons.expand_more_rounded,
-                  color: Design.darkerGray,
-                )
-              ],
-            ),
-            tileColor: Design.accentBlue,
-            onTap: () {
-              if (_infoListHeight != null) {
-                setState(() {
-                  _infoListHeight = null;
-                });
-              } else {
-                setState(() {
-                  _infoListHeight = 0;
-                });
-              }
-            },
+          DrawerDropdownItem(
+            onTap: _toggleInfoDropdown,
+            color: Design.accentBlue,
+            icon: Icons.info,
+            title: "Informações",
+            dropdownToggled: _infoToggled,
           ),
           Container(
             height: _infoListHeight,
             color: Design.white2,
             child: Column(
-              children: const [
-                ListTile(
-                  title: Text("Item"),
+              children: [
+                DrawerItem(
+                  title: "Dicas",
+                  onTap: () {},
                 ),
-                ListTile(
-                  title: Text("Item"),
+                DrawerItem(
+                  title: "Eventos",
+                  onTap: () {},
                 ),
-                ListTile(
-                  title: Text("Item"),
+                DrawerItem(
+                  title: "Legislação",
+                  onTap: () {},
                 ),
-                ListTile(
-                  title: Text("Item"),
+                DrawerItem(
+                  title: "Termo de adoção",
+                  onTap: () {},
                 ),
-                ListTile(
-                  title: Text("Item"),
+                DrawerItem(
+                  title: "Histórias de adoção",
+                  onTap: () {},
                 ),
               ],
             ),
           ),
-          ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.settings,
-                      color: Design.lightGray,
-                      size: 24,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 20),
-                      child: const Text(
-                        "Configurações",
-                        style: TextStyle(
-                            color: Design.darkerGray,
-                            fontSize: 14,
-                            fontFamily: "Roboto",
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ],
-                ),
-                const Icon(
-                  Icons.expand_more_rounded,
-                  color: Design.darkerGray,
-                )
-              ],
-            ),
-            tileColor: Design.lightestGray,
-            onTap: () {
-              if (_settingsListHeight != null) {
-                setState(() {
-                  _settingsListHeight = null;
-                });
-              } else {
-                setState(() {
-                  _settingsListHeight = 0;
-                });
-              }
-            },
+          DrawerDropdownItem(
+            onTap: _toggleSettingsDropdown,
+            color: Design.lightestGray,
+            icon: Icons.settings,
+            title: "Configurações",
+            dropdownToggled: _settingsToggled,
           ),
           Container(
             height: _settingsListHeight,
             color: Design.white2,
             child: Column(
-              children: const [
-                ListTile(
-                  title: Text("Item"),
+              children: [
+                DrawerItem(
+                  title: "Privacidade",
+                  onTap: () {},
                 ),
               ],
             ),
