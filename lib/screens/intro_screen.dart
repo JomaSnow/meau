@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:app/api/user_functions.dart';
 import 'package:app/util/design.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/custom_app_bar.dart';
@@ -25,11 +26,6 @@ class IntroScreen extends StatelessWidget {
 
   void _registerFunction() {
     log("cadastrar animal");
-    return;
-  }
-
-  void _login() {
-    log("login");
     return;
   }
 
@@ -72,9 +68,9 @@ class IntroScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              LinkButton(
+              const LinkButton(
                 value: "login",
-                onPressed: _login,
+                onPressed: signIn,
                 width: 80,
               ),
               Container(
