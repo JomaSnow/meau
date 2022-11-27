@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:app/api/user_functions.dart';
+import 'package:app/screens/login_screen.dart';
 import 'package:app/util/design.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/custom_app_bar.dart';
@@ -68,11 +69,20 @@ class IntroScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const LinkButton(
-                value: "login",
-                onPressed: signIn,
-                width: 80,
-              ),
+              isLoggedIn()
+                  ? const SizedBox(
+                      height: 42,
+                    )
+                  : LinkButton(
+                      value: "login",
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
+                      },
+                      width: 80,
+                    ),
               Container(
                 margin: const EdgeInsets.only(bottom: 32),
                 child: Image.asset(

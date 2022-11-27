@@ -1,27 +1,27 @@
 import 'dart:developer';
 
+import 'package:app/api/user_functions.dart';
+import 'package:app/screens/intro_screen.dart';
+import 'package:app/screens/register_screen.dart';
 import 'package:app/util/design.dart';
 import 'package:app/util/dismiss_focus.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/custom_app_bar.dart';
-import 'package:app/widgets/custom_drawer.dart';
 import 'package:app/widgets/input.dart';
 import 'package:app/widgets/link_button.dart';
 import 'package:app/widgets/scrollable_container.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
 
-  void _login() {
-    log("login with username ${usernameController.text} and password ${passwordController.text}");
-  }
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
 
-  void _register() {
-    log("go to register");
-  }
-
+class _LoginScreenState extends State<LoginScreen> {
   final usernameController = TextEditingController();
+
   final passwordController = TextEditingController();
 
   @override
@@ -30,9 +30,7 @@ class LoginScreen extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       appBar: const CustomAppBar(
         title: "Login",
-        leadingIcon: null,
       ),
-      drawer: const CustomDrawer(),
       body: ScrollableContainer(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -58,9 +56,14 @@ class LoginScreen extends StatelessWidget {
               children: [
                 Button(
                   value: "ENTRAR",
-                  onPressed: () {
+                  onPressed: () async {
                     dismissFocus(context);
-                    _login();
+                    await signIn();
+                    if (!mounted) return;
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const IntroScreen()));
                   },
                   color: Design.lightBlue,
                   width: 232,
@@ -68,7 +71,12 @@ class LoginScreen extends StatelessWidget {
                 LinkButton(
                     value: "crie uma conta",
                     width: 120,
-                    onPressed: _register,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const RegisterScreen()));
+                    },
                     fontColor: Design.lightBlue),
               ],
             ),

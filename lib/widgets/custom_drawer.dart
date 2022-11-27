@@ -7,6 +7,7 @@ import 'package:app/screens/events_screen.dart';
 import 'package:app/screens/favourites_screen.dart';
 import 'package:app/screens/foster_screen.dart';
 import 'package:app/screens/help_screen.dart';
+import 'package:app/screens/intro_screen.dart';
 import 'package:app/screens/legislation_screen.dart';
 import 'package:app/screens/my_pets_screen.dart';
 import 'package:app/screens/pet_register_screen.dart';
@@ -296,8 +297,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
               ],
             ),
           ),
-          const ListTile(
-            title: Center(
+          ListTile(
+            title: const Center(
               child: Text(
                 "Sair",
                 style: TextStyle(
@@ -307,7 +308,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     fontWeight: FontWeight.w500),
               ),
             ),
-            onTap: signOff,
+            onTap: () async {
+              await signOff();
+              if (!mounted) return;
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const IntroScreen()));
+            },
             tileColor: Design.lightBlue,
           ),
         ],
