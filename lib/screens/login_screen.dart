@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:app/api/user_functions.dart';
 import 'package:app/screens/intro_screen.dart';
 import 'package:app/screens/register_screen.dart';
@@ -13,7 +11,7 @@ import 'package:app/widgets/scrollable_container.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
