@@ -312,7 +312,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               await signOff();
               if (!mounted) return;
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const IntroScreen()));
+                  MaterialPageRoute(builder: (context) => IntroScreen()));
             },
             tileColor: Design.lightBlue,
           ),

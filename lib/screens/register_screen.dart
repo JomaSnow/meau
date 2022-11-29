@@ -6,6 +6,7 @@ import 'package:app/util/design.dart';
 import 'package:app/util/dismiss_focus.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/custom_app_bar.dart';
+import 'package:app/widgets/error_message.dart';
 import 'package:app/widgets/input.dart';
 import 'package:app/widgets/label.dart';
 import 'package:app/widgets/notice_card.dart';
@@ -76,7 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const IntroScreen(),
+            builder: (context) => IntroScreen(),
           ));
     } else {
       //MOCK: signal field errors
@@ -167,19 +168,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       text: "insert ImagePicker custom widget",
                       color: Colors.red,
                     ),
-                    errorMessage.isNotEmpty
-                        ? Container(
-                            margin: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-                            padding: const EdgeInsets.all(10),
-                            child: Text(
-                              errorMessage,
-                              style: const TextStyle(
-                                  color: Colors.redAccent,
-                                  fontSize: 14,
-                                  fontFamily: "Roboto"),
-                            ),
-                          )
-                        : Container(),
+                    ErrorMessage(errorMessage: errorMessage),
                     Button(
                       value: "FAZER CADASTRO",
                       onPressed: () {

@@ -5,6 +5,7 @@ import 'package:app/util/design.dart';
 import 'package:app/util/dismiss_focus.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/custom_app_bar.dart';
+import 'package:app/widgets/error_message.dart';
 import 'package:app/widgets/input.dart';
 import 'package:app/widgets/link_button.dart';
 import 'package:app/widgets/scrollable_container.dart';
@@ -21,6 +22,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final usernameController = TextEditingController();
 
   final passwordController = TextEditingController();
+
+  String errorMessage = "";
 
   @override
   Widget build(BuildContext context) {
@@ -52,16 +55,27 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Column(
               children: [
+                ErrorMessage(errorMessage: errorMessage),
                 Button(
                   value: "ENTRAR",
                   onPressed: () async {
+                    setState(() {
+                      errorMessage = "";
+                    });
                     dismissFocus(context);
-                    await signIn();
+                    String signInStatus = await signIn(
+                        usernameController.text, passwordController.text);
                     if (!mounted) return;
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const IntroScreen()));
+                    if (signInStatus.isEmpty) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => IntroScreen()));
+                    } else {
+                      setState(() {
+                        errorMessage = signInStatus;
+                      });
+                    }
                   },
                   color: Design.lightBlue,
                   width: 232,

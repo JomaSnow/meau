@@ -1,30 +1,38 @@
 import 'dart:developer';
-
-import 'package:app/util/local_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 bool isLoggedIn() {
-  if (LocalStorage.getUserId() != null) {
-    return true;
-  }
-  return false;
+  return FirebaseAuth.instance.currentUser?.uid != null;
 }
 
-Future signIn() async {
-  const userId = "abc123";
-
+Future<String> signIn(String emailAddress, String password) async {
   if (isLoggedIn()) {
-    log("there's an user already signed in");
+    return "Já existe um usuário logado.";
   } else {
-    await LocalStorage.storeUserId(userId);
-    log("signed in user id: $userId");
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: emailAddress, password: password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+        return "Usuário ou senha incorretos.";
+      } else {
+        return "Ocorreu um erro inesperado. ${e.code}";
+      }
+    }
   }
+  return "";
 }
 
-Future signOff() async {
+Future<String> signOff() async {
   if (!isLoggedIn()) {
-    log("no user logged to sign off");
+    log("Nenhum usuário para deslogar.");
+    return "Nenhum usuário para deslogar.";
   } else {
-    await LocalStorage.deleteUserId();
-    log("signed off");
+    try {
+      await FirebaseAuth.instance.signOut();
+      return "";
+    } on FirebaseAuthException catch (e) {
+      return "Ocorreu um erro inesperado. ${e.code}";
+    }
   }
 }

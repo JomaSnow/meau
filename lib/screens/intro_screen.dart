@@ -13,7 +13,7 @@ import 'package:app/widgets/scrollable_container.dart';
 import 'package:flutter/material.dart';
 
 class IntroScreen extends StatelessWidget {
-  const IntroScreen({super.key});
+  IntroScreen({super.key});
 
   void _adoptFunction() {
     log("adotar");
@@ -79,7 +79,7 @@ class IntroScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
+                                builder: (context) => const LoginScreen()));
                       },
                       width: 80,
                     ),

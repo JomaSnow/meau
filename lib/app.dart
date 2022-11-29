@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
       onTap: () {
         dismissFocus(context);
       },
-      child: const MaterialApp(
+      child: MaterialApp(
         title: "Meau",
         debugShowCheckedModeBanner: false,
         home: IntroScreen(),
