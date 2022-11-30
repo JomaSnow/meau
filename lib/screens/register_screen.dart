@@ -9,6 +9,7 @@ import 'package:app/widgets/button.dart';
 import 'package:app/widgets/error_message.dart';
 import 'package:app/widgets/input.dart';
 import 'package:app/widgets/label.dart';
+import 'package:app/widgets/loading.dart';
 import 'package:app/widgets/notice_card.dart';
 import 'package:app/widgets/page_template.dart';
 import 'package:flutter/material.dart';
@@ -22,26 +23,18 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final nameController = TextEditingController();
-
   final idadeController = TextEditingController();
-
   final emailController = TextEditingController();
-
   final estadoController = TextEditingController();
-
   final cidadeController = TextEditingController();
-
   final enderecoController = TextEditingController();
-
   final telefoneController = TextEditingController();
-
   final usernameController = TextEditingController();
-
   final passwordController = TextEditingController();
-
   final passwordConfirmController = TextEditingController();
 
   String errorMessage = "";
+  bool loading = false;
 
   bool _validateFields() {
     // password at least 6 characters long
@@ -68,6 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     dismissFocus(context);
     setState(() {
       errorMessage = "";
+      loading = true;
     });
     if (_validateFields()) {
       CreateUserModel newUser = CreateUserModel(
@@ -82,13 +76,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
           passwordController.text,
           passwordConfirmController.text);
 
-      await signUp(newUser);
-      if (!mounted) return;
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const IntroScreen(),
-          ));
+      err = await signUp(newUser);
+
+      if (err.isEmpty) {
+        if (!mounted) return;
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const IntroScreen(),
+            ));
+      }
     } else {
       if (err.isNotEmpty) {
         setState(() {
@@ -97,6 +94,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
       log("not registered: $errorMessage");
     }
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
@@ -177,9 +177,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   text: "insert ImagePicker custom widget",
                   color: Colors.red,
                 ),
-                ErrorMessage(errorMessage: errorMessage),
+                loading
+                    ? const Loading()
+                    : ErrorMessage(errorMessage: errorMessage),
                 Button(
                   value: "FAZER CADASTRO",
+                  disabled: loading,
                   onPressed: () {
                     _handleRegister(context);
                   },

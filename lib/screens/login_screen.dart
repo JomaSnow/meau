@@ -10,6 +10,8 @@ import 'package:app/widgets/link_button.dart';
 import 'package:app/widgets/page_template.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/loading.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -19,10 +21,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final usernameController = TextEditingController();
-
   final passwordController = TextEditingController();
 
   String errorMessage = "";
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +50,16 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         Column(
           children: [
-            ErrorMessage(errorMessage: errorMessage),
+            loading
+                ? const Loading()
+                : ErrorMessage(errorMessage: errorMessage),
             Button(
               value: "ENTRAR",
+              disabled: loading,
               onPressed: () async {
                 setState(() {
                   errorMessage = "";
+                  loading = true;
                 });
                 dismissFocus(context);
                 String signInStatus = await signIn(
@@ -69,6 +75,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     errorMessage = signInStatus;
                   });
                 }
+                setState(() {
+                  loading = false;
+                });
               },
               color: Design.lightBlue,
               width: 232,
