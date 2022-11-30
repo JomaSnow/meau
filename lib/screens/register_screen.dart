@@ -1,16 +1,16 @@
-import 'dart:async';
 import 'dart:developer';
 
+import 'package:app/api/user_functions.dart';
+import 'package:app/models/user_model.dart';
 import 'package:app/screens/intro_screen.dart';
 import 'package:app/util/design.dart';
 import 'package:app/util/dismiss_focus.dart';
 import 'package:app/widgets/button.dart';
-import 'package:app/widgets/custom_app_bar.dart';
 import 'package:app/widgets/error_message.dart';
 import 'package:app/widgets/input.dart';
 import 'package:app/widgets/label.dart';
 import 'package:app/widgets/notice_card.dart';
-import 'package:app/widgets/scrollable_container.dart';
+import 'package:app/widgets/page_template.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -64,126 +64,133 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _handleRegister(BuildContext context) async {
+    String err = "";
     dismissFocus(context);
     setState(() {
       errorMessage = "";
     });
     if (_validateFields()) {
-      // MOCK: implement firebase register function
-      await Future.delayed(const Duration(seconds: 4), () {
-        log("registered");
-      });
+      CreateUserModel newUser = CreateUserModel(
+          nameController.text,
+          idadeController.text,
+          emailController.text,
+          estadoController.text,
+          cidadeController.text,
+          enderecoController.text,
+          telefoneController.text,
+          usernameController.text,
+          passwordController.text,
+          passwordConfirmController.text);
+
+      await signUp(newUser);
       if (!mounted) return;
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => IntroScreen(),
+            builder: (context) => const IntroScreen(),
           ));
     } else {
-      //MOCK: signal field errors
+      if (err.isNotEmpty) {
+        setState(() {
+          errorMessage = err;
+        });
+      }
       log("not registered: $errorMessage");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: const CustomAppBar(
-        title: "Cadastro Pessoal",
-      ),
-      body: ScrollableContainer(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return PageTemplate(
+      title: "Cadastro Pessoal",
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      showDrawer: false,
+      children: [
+        const NoticeCard(
+          text:
+              "As informações preenchidas serão divulgadas apenas para a pessoa com a qual você realizar o processo de adoção e/ou apadrinhamento, após a formalização do processo.",
+        ),
+        const Label(text: "INFORMAÇÕES PESSOAIS"),
+        Input(
+          controller: nameController,
+          placeholder: "Nome Completo",
+          styleColor: Design.lightBlue,
+        ),
+        Input(
+          controller: idadeController,
+          placeholder: "Idade",
+          styleColor: Design.lightBlue,
+        ),
+        Input(
+          controller: emailController,
+          placeholder: "E-mail",
+          styleColor: Design.lightBlue,
+        ),
+        Input(
+          controller: estadoController,
+          placeholder: "Estado",
+          styleColor: Design.lightBlue,
+        ),
+        Input(
+          controller: cidadeController,
+          placeholder: "Cidade",
+          styleColor: Design.lightBlue,
+        ),
+        Input(
+          controller: enderecoController,
+          placeholder: "Endereço",
+          styleColor: Design.lightBlue,
+        ),
+        Input(
+          controller: telefoneController,
+          placeholder: "Telefone",
+          styleColor: Design.lightBlue,
+        ),
+        const Label(text: "INFORMAÇÕES DE PERFIL"),
+        Input(
+          controller: usernameController,
+          placeholder: "Nome de usuário",
+          styleColor: Design.lightBlue,
+        ),
+        Input(
+          controller: passwordController,
+          placeholder: "Senha",
+          isPassword: true,
+          styleColor: Design.lightBlue,
+        ),
+        Input(
+          controller: passwordConfirmController,
+          placeholder: "Confirmação de senha",
+          isPassword: true,
+          styleColor: Design.lightBlue,
+        ),
+        const Label(
+          text: "FOTO DE PERFIL",
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const NoticeCard(
-              text:
-                  "As informações preenchidas serão divulgadas apenas para a pessoa com a qual você realizar o processo de adoção e/ou apadrinhamento, após a formalização do processo.",
-            ),
-            const Label(text: "INFORMAÇÕES PESSOAIS"),
-            Input(
-              controller: nameController,
-              placeholder: "Nome Completo",
-              styleColor: Design.lightBlue,
-            ),
-            Input(
-              controller: idadeController,
-              placeholder: "Idade",
-              styleColor: Design.lightBlue,
-            ),
-            Input(
-              controller: emailController,
-              placeholder: "E-mail",
-              styleColor: Design.lightBlue,
-            ),
-            Input(
-              controller: estadoController,
-              placeholder: "Estado",
-              styleColor: Design.lightBlue,
-            ),
-            Input(
-              controller: cidadeController,
-              placeholder: "Cidade",
-              styleColor: Design.lightBlue,
-            ),
-            Input(
-              controller: enderecoController,
-              placeholder: "Endereço",
-              styleColor: Design.lightBlue,
-            ),
-            Input(
-              controller: telefoneController,
-              placeholder: "Telefone",
-              styleColor: Design.lightBlue,
-            ),
-            const Label(text: "INFORMAÇÕES DE PERFIL"),
-            Input(
-              controller: usernameController,
-              placeholder: "Nome de usuário",
-              styleColor: Design.lightBlue,
-            ),
-            Input(
-              controller: passwordController,
-              placeholder: "Senha",
-              isPassword: true,
-              styleColor: Design.lightBlue,
-            ),
-            Input(
-              controller: passwordConfirmController,
-              placeholder: "Confirmação de senha",
-              isPassword: true,
-              styleColor: Design.lightBlue,
-            ),
-            const Label(
-              text: "FOTO DE PERFIL",
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Column(
               children: [
-                Column(
-                  children: [
-                    const Label(
-                      text: "insert ImagePicker custom widget",
-                      color: Colors.red,
-                    ),
-                    ErrorMessage(errorMessage: errorMessage),
-                    Button(
-                      value: "FAZER CADASTRO",
-                      onPressed: () {
-                        _handleRegister(context);
-                      },
-                      width: 240,
-                      color: Design.lightBlue,
-                    ),
-                  ],
+                const Label(
+                  text: "insert ImagePicker custom widget",
+                  color: Colors.red,
+                ),
+                ErrorMessage(errorMessage: errorMessage),
+                Button(
+                  value: "FAZER CADASTRO",
+                  onPressed: () {
+                    _handleRegister(context);
+                  },
+                  width: 240,
+                  color: Design.lightBlue,
                 ),
               ],
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 }
