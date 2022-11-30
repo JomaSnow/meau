@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:app/util/design.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +5,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar(
       {super.key,
       this.title = "",
-      this.leadingAction = _defaultLeadingAction,
+      required this.leadingAction,
       this.leadingIcon,
       this.transparentBackground = false,
       this.backgroundColor = Design.accentBlue,
@@ -19,10 +17,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool transparentBackground;
   final VoidCallback leadingAction;
   final LeadingIcon? leadingIcon;
-
-  static _defaultLeadingAction() {
-    log("Pressed leading icon. Remember to pass a function to leadingAction attribute.");
-  }
 
   Widget _drawLeadingIcon(LeadingIcon? icon) {
     if (icon == LeadingIcon.search) {

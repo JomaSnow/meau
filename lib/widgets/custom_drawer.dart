@@ -1,3 +1,19 @@
+import 'package:app/api/user_functions.dart';
+import 'package:app/screens/adopt_form_screen.dart';
+import 'package:app/screens/adopt_screen.dart';
+import 'package:app/screens/adopt_stories_screen.dart';
+import 'package:app/screens/chat_screen.dart';
+import 'package:app/screens/events_screen.dart';
+import 'package:app/screens/favourites_screen.dart';
+import 'package:app/screens/foster_screen.dart';
+import 'package:app/screens/help_screen.dart';
+import 'package:app/screens/intro_screen.dart';
+import 'package:app/screens/legislation_screen.dart';
+import 'package:app/screens/my_pets_screen.dart';
+import 'package:app/screens/pet_register_screen.dart';
+import 'package:app/screens/privacy_screen.dart';
+import 'package:app/screens/profile_screen.dart';
+import 'package:app/screens/tips_screen.dart';
 import 'package:app/util/design.dart';
 import 'package:app/widgets/drawer_dropdown_item.dart';
 import 'package:app/widgets/drawer_item.dart';
@@ -123,19 +139,35 @@ class _CustomDrawerState extends State<CustomDrawer> {
               children: [
                 DrawerItem(
                   title: "Meu perfil",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const ProfileScreen()));
+                  },
                 ),
                 DrawerItem(
                   title: "Meus pets",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const MyPetsScreen()));
+                  },
                 ),
                 DrawerItem(
                   title: "Favoritos",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const FavouritesScreen()));
+                  },
                 ),
                 DrawerItem(
                   title: "Chat",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const ChatScreen()));
+                  },
                 ),
               ],
             ),
@@ -154,19 +186,35 @@ class _CustomDrawerState extends State<CustomDrawer> {
               children: [
                 DrawerItem(
                   title: "Cadastrar um pet",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const PetRegisterScreen()));
+                  },
                 ),
                 DrawerItem(
                   title: "Adotar um pet",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const AdoptScreen()));
+                  },
                 ),
                 DrawerItem(
                   title: "Ajudar um pet",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const HelpScreen()));
+                  },
                 ),
                 DrawerItem(
                   title: "Apadrinhar um pet",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const FosterScreen()));
+                  },
                 ),
               ],
             ),
@@ -185,23 +233,43 @@ class _CustomDrawerState extends State<CustomDrawer> {
               children: [
                 DrawerItem(
                   title: "Dicas",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const TipsScreen()));
+                  },
                 ),
                 DrawerItem(
                   title: "Eventos",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const EventsScreen()));
+                  },
                 ),
                 DrawerItem(
                   title: "Legislação",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const LegislationScreen()));
+                  },
                 ),
                 DrawerItem(
                   title: "Termo de adoção",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const AdoptFormScreen()));
+                  },
                 ),
                 DrawerItem(
                   title: "Histórias de adoção",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const AdoptStoriesScreen()));
+                  },
                 ),
               ],
             ),
@@ -220,7 +288,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
               children: [
                 DrawerItem(
                   title: "Privacidade",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const PrivacyScreen()));
+                  },
                 ),
               ],
             ),
@@ -236,7 +308,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     fontWeight: FontWeight.w500),
               ),
             ),
-            onTap: () {},
+            onTap: () async {
+              await signOff();
+              if (!mounted) return;
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const IntroScreen()));
+            },
             tileColor: Design.lightBlue,
           ),
         ],

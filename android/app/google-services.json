@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "636388040860",
+    "project_id": "meau-backend",
+    "storage_bucket": "meau-backend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:636388040860:android:1daac81bfe16739e2acd59",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "636388040860-qpet13otp4imb7124kvs3tcukkpma3rs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVhjraAIuL5IoDOP1jgN1656gnygIcucA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "636388040860-qpet13otp4imb7124kvs3tcukkpma3rs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "636388040860-btrgv2l675lg87o51q6gk2a0nt3aph2p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
