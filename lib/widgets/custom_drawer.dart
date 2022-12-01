@@ -1,4 +1,5 @@
 import 'package:app/api/user_functions.dart';
+import 'package:app/models/user_model.dart';
 import 'package:app/screens/adopt_form_screen.dart';
 import 'package:app/screens/adopt_screen.dart';
 import 'package:app/screens/adopt_stories_screen.dart';
@@ -9,7 +10,9 @@ import 'package:app/screens/foster_screen.dart';
 import 'package:app/screens/help_screen.dart';
 import 'package:app/screens/intro_screen.dart';
 import 'package:app/screens/legislation_screen.dart';
+import 'package:app/screens/login_screen.dart';
 import 'package:app/screens/my_pets_screen.dart';
+import 'package:app/screens/no_account_screen.dart';
 import 'package:app/screens/pet_register_screen.dart';
 import 'package:app/screens/privacy_screen.dart';
 import 'package:app/screens/profile_screen.dart';
@@ -36,6 +39,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
   bool _shortcutsToggled = false;
   bool _infoToggled = false;
   bool _settingsToggled = false;
+
+  UserModel? currentUser;
+
+  @override
+  void initState() {
+    _setCurrentUser();
+    super.initState();
+  }
+
+  void _setCurrentUser() async {
+    UserModel? user = await getCurrentUser();
+    if (user != null) {
+      setState(() {
+        currentUser = user;
+      });
+    }
+  }
 
   void _toggleUserDropdown() {
     if (_userListHeight != null) {
@@ -110,68 +130,91 @@ class _CustomDrawerState extends State<CustomDrawer> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(left: 15),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image.asset(
-                        "lib/assets/images/user_avatar_placeholder.jpg",
-                        height: 70,
-                        width: 70,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  )
+                  currentUser != null
+                      ? Container(
+                          margin: const EdgeInsets.only(left: 15),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Image.asset(
+                              "lib/assets/images/user_avatar_placeholder.jpg",
+                              height: 70,
+                              width: 70,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          margin: const EdgeInsets.only(left: 15),
+                          child: Image.asset(
+                            "lib/assets/images/Meau_marca.png",
+                            width: 100,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                 ],
               ),
             ),
           ),
-          DrawerDropdownItem(
-            onTap: _toggleUserDropdown,
-            color: Design.lightBlue,
-            title: "Prof Shahmat",
-            dropdownToggled: _userToggled,
-          ),
-          Container(
-            height: _userListHeight,
-            color: Design.white2,
-            child: Column(
-              children: [
-                DrawerItem(
-                  title: "Meu perfil",
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const ProfileScreen()));
-                  },
-                ),
-                DrawerItem(
-                  title: "Meus pets",
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const MyPetsScreen()));
-                  },
-                ),
-                DrawerItem(
-                  title: "Favoritos",
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const FavouritesScreen()));
-                  },
-                ),
-                DrawerItem(
-                  title: "Chat",
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const ChatScreen()));
-                  },
-                ),
-              ],
-            ),
-          ),
+          currentUser != null
+              ? Column(
+                  children: [
+                    DrawerDropdownItem(
+                      onTap: _toggleUserDropdown,
+                      color: Design.lightBlue,
+                      title: currentUser!.nome,
+                      dropdownToggled: _userToggled,
+                    ),
+                    Container(
+                      height: _userListHeight,
+                      color: Design.white2,
+                      child: Column(
+                        children: [
+                          DrawerItem(
+                            title: "Meu perfil",
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ProfileScreen()));
+                            },
+                          ),
+                          DrawerItem(
+                            title: "Meus pets",
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const MyPetsScreen()));
+                            },
+                          ),
+                          DrawerItem(
+                            title: "Favoritos",
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const FavouritesScreen()));
+                            },
+                          ),
+                          DrawerItem(
+                            title: "Chat",
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ChatScreen()));
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              : Container(),
           DrawerDropdownItem(
             onTap: _toggleShortcutsDropdown,
             color: Design.lightYellow,
@@ -188,8 +231,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   title: "Cadastrar um pet",
                   onTap: () {
                     Navigator.pop(context);
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const PetRegisterScreen()));
+                    currentUser != null
+                        ? Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const PetRegisterScreen()))
+                        : Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const NoAccountScreen()));
                   },
                 ),
                 DrawerItem(
@@ -212,6 +260,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   title: "Apadrinhar um pet",
                   onTap: () {
                     Navigator.pop(context);
+
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const FosterScreen()));
                   },
@@ -297,25 +346,48 @@ class _CustomDrawerState extends State<CustomDrawer> {
               ],
             ),
           ),
-          ListTile(
-            title: const Center(
-              child: Text(
-                "Sair",
-                style: TextStyle(
-                    color: Design.darkerGray,
-                    fontSize: 14,
-                    fontFamily: "Roboto",
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
-            onTap: () async {
-              await signOff();
-              if (!mounted) return;
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const IntroScreen()));
-            },
-            tileColor: Design.lightBlue,
-          ),
+          currentUser != null
+              ? ListTile(
+                  title: const Center(
+                    child: Text(
+                      "Sair",
+                      style: TextStyle(
+                          color: Design.darkerGray,
+                          fontSize: 14,
+                          fontFamily: "Roboto",
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  onTap: () async {
+                    await signOff();
+                    if (!mounted) return;
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const IntroScreen()));
+                  },
+                  tileColor: Design.lightBlue,
+                )
+              : ListTile(
+                  title: const Center(
+                    child: Text(
+                      "Login",
+                      style: TextStyle(
+                          color: Design.darkerGray,
+                          fontSize: 14,
+                          fontFamily: "Roboto",
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()));
+                  },
+                  tileColor: Design.lightBlue,
+                ),
         ],
       ),
     );

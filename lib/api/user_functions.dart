@@ -7,6 +7,45 @@ bool isLoggedIn() {
   return FirebaseAuth.instance.currentUser?.uid != null;
 }
 
+Future<UserModel> getUser(String uid) async {
+  UserModel user = UserModel();
+
+  try {
+    DocumentSnapshot<Map<String, dynamic>> docRef =
+        await FirebaseFirestore.instance.collection("users").doc(uid).get();
+
+    user.id = uid;
+    user.email = FirebaseAuth.instance.currentUser!.email!;
+    user.idade = docRef.get("idade");
+    user.cidade = docRef.get("cidade");
+    user.telefone = docRef.get("telefone");
+    user.estado = docRef.get("estado");
+    user.endereco = docRef.get("endereco");
+    user.nome = docRef.get("nome");
+    user.username = docRef.get("username");
+  } catch (e) {
+    log(e.toString());
+  }
+
+  return user;
+}
+
+Future<UserModel?> getCurrentUser() async {
+  UserModel? currentUser = UserModel();
+
+  if (isLoggedIn()) {
+    try {
+      currentUser = await getUser(FirebaseAuth.instance.currentUser!.uid);
+    } catch (e) {
+      currentUser = null;
+    }
+  } else {
+    currentUser = null;
+  }
+
+  return currentUser;
+}
+
 Future<String> signIn(String emailAddress, String password) async {
   if (isLoggedIn()) {
     return "Já existe um usuário logado.";
@@ -60,7 +99,7 @@ Future<String> signUp(CreateUserModel user) async {
         "telefone": user.telefone,
         "username": user.username,
       });
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseException catch (e) {
       return e.code;
     }
   }
