@@ -38,7 +38,6 @@ class _LoginScreenState extends State<LoginScreen> {
           margin: const EdgeInsets.fromLTRB(0, 40, 0, 34),
           child: Form(
             key: _loginFormKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               children: [
                 Input(

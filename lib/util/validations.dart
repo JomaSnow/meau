@@ -134,8 +134,6 @@ class RegisterValidations {
       return 'Nome de usuário deve ter ao menos 3 caracteres.';
     }
 
-    // TODO: validar unicidade no username
-
     return null;
   }
 

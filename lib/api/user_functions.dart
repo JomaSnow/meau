@@ -15,7 +15,7 @@ Future<UserModel> getUser(String uid) async {
         await FirebaseFirestore.instance.collection("users").doc(uid).get();
 
     user.id = uid;
-    user.email = FirebaseAuth.instance.currentUser!.email!;
+    user.email = docRef.get("email");
     user.idade = docRef.get("idade");
     user.cidade = docRef.get("cidade");
     user.telefone = docRef.get("telefone");
@@ -23,6 +23,62 @@ Future<UserModel> getUser(String uid) async {
     user.endereco = docRef.get("endereco");
     user.nome = docRef.get("nome");
     user.username = docRef.get("username");
+  } catch (e) {
+    log(e.toString());
+  }
+
+  return user;
+}
+
+Future<UserModel?> getUserByUsername(String username) async {
+  UserModel user = UserModel();
+
+  try {
+    QuerySnapshot<Map<String, dynamic>> queryResult = await FirebaseFirestore
+        .instance
+        .collection("users")
+        .where("username", isEqualTo: username)
+        .get();
+
+    QueryDocumentSnapshot<Map<String, dynamic>> doc = queryResult.docs.single;
+
+    user.id = doc.id;
+    user.email = doc.get("email");
+    user.idade = doc.get("idade");
+    user.cidade = doc.get("cidade");
+    user.telefone = doc.get("telefone");
+    user.estado = doc.get("estado");
+    user.endereco = doc.get("endereco");
+    user.nome = doc.get("nome");
+    user.username = doc.get("username");
+  } catch (e) {
+    log(e.toString());
+  }
+
+  return user;
+}
+
+Future<UserModel?> getUserByEmail(String email) async {
+  UserModel user = UserModel();
+
+  try {
+    QuerySnapshot<Map<String, dynamic>> queryResult = await FirebaseFirestore
+        .instance
+        .collection("users")
+        .where("email", isEqualTo: email)
+        .get();
+
+    QueryDocumentSnapshot<Map<String, dynamic>> doc = queryResult.docs.single;
+
+    user.id = doc.id;
+    user.email = doc.get("email");
+    user.idade = doc.get("idade");
+    user.cidade = doc.get("cidade");
+    user.telefone = doc.get("telefone");
+    user.estado = doc.get("estado");
+    user.endereco = doc.get("endereco");
+    user.nome = doc.get("nome");
+    user.username = doc.get("username");
   } catch (e) {
     log(e.toString());
   }
@@ -92,6 +148,7 @@ Future<String> signUp(CreateUserModel user) async {
           .doc(credential.user?.uid.toString())
           .set({
         "nome": user.nome,
+        "email": user.email,
         "idade": user.idade,
         "estado": user.estado,
         "cidade": user.cidade,

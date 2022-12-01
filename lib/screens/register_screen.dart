@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:app/api/user_functions.dart';
 import 'package:app/models/user_model.dart';
 import 'package:app/screens/intro_screen.dart';
@@ -39,13 +37,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool loading = false;
 
   void _handleRegister(BuildContext context) async {
-    String err = "";
+    String signupErr = "";
     dismissFocus(context);
     setState(() {
       errorMessage = "";
       loading = true;
     });
+
     if (_registerFormKey.currentState!.validate()) {
+      UserModel? usr = await getUserByEmail(emailController.text.trim());
+
+      if (usr!.email != "") {
+        setState(() {
+          errorMessage = "Já existe uma conta com este email.";
+          loading = false;
+        });
+        return;
+      }
+
+      usr = await getUserByUsername(usernameController.text.trim());
+
+      if (usr!.username != "") {
+        setState(() {
+          errorMessage =
+              "Este nome de usuário já está sendo utilizado.\nEscolha outro nome de usuário.";
+          loading = false;
+        });
+        return;
+      }
+
       CreateUserModel newUser = CreateUserModel(
           nameController.text.trim(),
           idadeController.text.trim(),
@@ -58,9 +78,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           passwordController.text.trim(),
           passwordConfirmController.text.trim());
 
-      err = await signUp(newUser);
+      signupErr = await signUp(newUser);
 
-      if (err.isEmpty) {
+      if (signupErr.isEmpty) {
         if (!mounted) return;
         Navigator.pushReplacement(
             context,
@@ -69,12 +89,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ));
       }
     } else {
-      if (err.isNotEmpty) {
+      if (signupErr.isNotEmpty) {
         setState(() {
-          errorMessage = err;
+          errorMessage = signupErr;
         });
       }
-      log("not registered: $errorMessage");
     }
     setState(() {
       loading = false;
@@ -96,7 +115,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         const Label(text: "INFORMAÇÕES PESSOAIS"),
         Form(
           key: _registerFormKey,
-          autovalidateMode: AutovalidateMode.always,
           child: Column(
             children: [
               Input(
