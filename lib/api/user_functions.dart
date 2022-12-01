@@ -107,10 +107,26 @@ Future<String> signIn(String emailAddress, String password) async {
     return "Já existe um usuário logado.";
   } else {
     try {
+      String loginEmail = emailAddress;
+
+      if (!emailAddress.trim().contains("@")) {
+        try {
+          UserModel? usr = await getUserByUsername(emailAddress);
+
+          if (usr!.email != "") {
+            loginEmail = usr.email;
+          }
+        } on FirebaseException catch (e) {
+          return "Ocorreu um erro inesperado. ${e.code}";
+        }
+      }
+
       await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: emailAddress, password: password);
+          .signInWithEmailAndPassword(email: loginEmail, password: password);
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+      if (e.code == 'user-not-found' ||
+          e.code == 'wrong-password' ||
+          e.code == 'invalid-email') {
         return "Usuário ou senha incorretos.";
       } else {
         return "Ocorreu um erro inesperado. ${e.code}";
