@@ -5,6 +5,7 @@ import 'package:app/models/user_model.dart';
 import 'package:app/screens/intro_screen.dart';
 import 'package:app/util/design.dart';
 import 'package:app/util/dismiss_focus.dart';
+import 'package:app/util/validations.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/error_message.dart';
 import 'package:app/widgets/input.dart';
@@ -32,29 +33,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
+  final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
 
   String errorMessage = "";
   bool loading = false;
-
-  bool _validateFields() {
-    // password at least 6 characters long
-    if (passwordController.text.length < 6) {
-      setState(() {
-        errorMessage = "Senha deve conter pelo menos 6 caracteres.";
-      });
-      return false;
-    }
-
-    // passwords match
-    if (passwordController.text != passwordConfirmController.text) {
-      setState(() {
-        errorMessage = "Senhas não são iguais.";
-      });
-      return false;
-    }
-
-    return true;
-  }
 
   void _handleRegister(BuildContext context) async {
     String err = "";
@@ -63,18 +45,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
       errorMessage = "";
       loading = true;
     });
-    if (_validateFields()) {
+    if (_registerFormKey.currentState!.validate()) {
       CreateUserModel newUser = CreateUserModel(
-          nameController.text,
-          idadeController.text,
-          emailController.text,
-          estadoController.text,
-          cidadeController.text,
-          enderecoController.text,
-          telefoneController.text,
-          usernameController.text,
-          passwordController.text,
-          passwordConfirmController.text);
+          nameController.text.trim(),
+          idadeController.text.trim(),
+          emailController.text.trim(),
+          estadoController.text.trim().toUpperCase(),
+          cidadeController.text.trim(),
+          enderecoController.text.trim(),
+          telefoneController.text.trim(),
+          usernameController.text.trim(),
+          passwordController.text.trim(),
+          passwordConfirmController.text.trim());
 
       err = await signUp(newUser);
 
@@ -112,58 +94,114 @@ class _RegisterScreenState extends State<RegisterScreen> {
               "As informações preenchidas serão divulgadas apenas para a pessoa com a qual você realizar o processo de adoção e/ou apadrinhamento, após a formalização do processo.",
         ),
         const Label(text: "INFORMAÇÕES PESSOAIS"),
-        Input(
-          controller: nameController,
-          placeholder: "Nome Completo",
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: idadeController,
-          placeholder: "Idade",
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: emailController,
-          placeholder: "E-mail",
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: estadoController,
-          placeholder: "Estado",
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: cidadeController,
-          placeholder: "Cidade",
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: enderecoController,
-          placeholder: "Endereço",
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: telefoneController,
-          placeholder: "Telefone",
-          styleColor: Design.lightBlue,
-        ),
-        const Label(text: "INFORMAÇÕES DE PERFIL"),
-        Input(
-          controller: usernameController,
-          placeholder: "Nome de usuário",
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: passwordController,
-          placeholder: "Senha",
-          isPassword: true,
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: passwordConfirmController,
-          placeholder: "Confirmação de senha",
-          isPassword: true,
-          styleColor: Design.lightBlue,
+        Form(
+          key: _registerFormKey,
+          autovalidateMode: AutovalidateMode.always,
+          child: Column(
+            children: [
+              Input(
+                controller: nameController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateName(value);
+                },
+                type: TextInputType.name,
+                placeholder: "Nome Completo",
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: idadeController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateIdade(value);
+                },
+                type: TextInputType.number,
+                placeholder: "Idade",
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: emailController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateEmail(value);
+                },
+                type: TextInputType.emailAddress,
+                placeholder: "E-mail",
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: estadoController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateEstado(value);
+                },
+                type: TextInputType.streetAddress,
+                placeholder: "Estado",
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: cidadeController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateCidade(value);
+                },
+                type: TextInputType.streetAddress,
+                placeholder: "Cidade",
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: enderecoController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateEndereco(value);
+                },
+                type: TextInputType.streetAddress,
+                placeholder: "Endereço",
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: telefoneController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateTelefone(value);
+                },
+                type: TextInputType.phone,
+                placeholder: "Telefone",
+                styleColor: Design.lightBlue,
+              ),
+              const Label(text: "INFORMAÇÕES DE PERFIL"),
+              Input(
+                controller: usernameController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateUsername(value);
+                },
+                type: TextInputType.text,
+                placeholder: "Nome de usuário",
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: passwordController,
+                validationAction: (String? value) {
+                  if (passwordController.text !=
+                      passwordConfirmController.text) {
+                    return "As senhas devem ser iguais.";
+                  }
+                  return RegisterValidations.validatePassword(value);
+                },
+                type: TextInputType.text,
+                placeholder: "Senha",
+                isPassword: true,
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: passwordConfirmController,
+                validationAction: (String? value) {
+                  if (passwordController.text !=
+                      passwordConfirmController.text) {
+                    return "As senhas devem ser iguais.";
+                  }
+                  return RegisterValidations.validatePasswordConfirm(value);
+                },
+                type: TextInputType.text,
+                placeholder: "Confirmação de senha",
+                isPassword: true,
+                styleColor: Design.lightBlue,
+              ),
+            ],
+          ),
         ),
         const Label(
           text: "FOTO DE PERFIL",
