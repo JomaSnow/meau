@@ -49,5 +49,9 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Necessário para enviar fotos da sua galeria de animais e para foto do perfil</string>		
+		<key>NSCameraUsageDescription</key>
+		<string>Necessário para poder tirar foto diretamente</string>		
 	</dict>
 </plist>

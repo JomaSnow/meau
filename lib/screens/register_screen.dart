@@ -6,6 +6,7 @@ import 'package:app/util/dismiss_focus.dart';
 import 'package:app/util/validations.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/error_message.dart';
+import 'package:app/widgets/image_picker_button.dart';
 import 'package:app/widgets/input.dart';
 import 'package:app/widgets/label.dart';
 import 'package:app/widgets/loading.dart';
@@ -229,10 +230,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           children: [
             Column(
               children: [
-                const Label(
-                  text: "insert ImagePicker custom widget",
-                  color: Colors.red,
-                ),
+                const ImagePickerButton(),
                 loading
                     ? const Loading()
                     : ErrorMessage(errorMessage: errorMessage),
