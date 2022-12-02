@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/api/user_functions.dart';
 import 'package:app/models/user_model.dart';
 import 'package:app/screens/intro_screen.dart';
@@ -13,6 +15,8 @@ import 'package:app/widgets/loading.dart';
 import 'package:app/widgets/notice_card.dart';
 import 'package:app/widgets/page_template.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -32,21 +36,55 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
+
+  final ImagePicker _picker = ImagePicker();
   final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
 
   String errorMessage = "";
+  String imageErrorMessage = "";
   bool loading = false;
+  Uint8List? imageBytes;
+
+  void _pickImage() async {
+    try {
+      XFile? img = await _picker.pickImage(source: ImageSource.gallery);
+      Uint8List bytes = await img!.readAsBytes();
+
+      setState(() {
+        imageBytes = bytes;
+      });
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  void _deleteImage() async {
+    setState(() {
+      imageBytes = null;
+    });
+  }
 
   void _handleRegister(BuildContext context) async {
     String signupErr = "";
     dismissFocus(context);
     setState(() {
       errorMessage = "";
+      imageErrorMessage = "";
       loading = true;
     });
 
     if (_registerFormKey.currentState!.validate()) {
-      UserModel? usr = await getUserByEmail(emailController.text.trim());
+      UserModel? usr;
+
+      if (imageBytes == null) {
+        setState(() {
+          imageErrorMessage = "Selecione uma imagem.";
+          loading = false;
+        });
+        return;
+      }
+
+      usr = await getUserByEmail(emailController.text.trim());
 
       if (usr!.email != "") {
         setState(() {
@@ -230,7 +268,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
           children: [
             Column(
               children: [
-                const ImagePickerButton(),
+                ImagePickerButton(
+                    imageBytes: imageBytes,
+                    error: imageErrorMessage,
+                    pickImage: _pickImage,
+                    deleteImage: _deleteImage),
                 loading
                     ? const Loading()
                     : ErrorMessage(errorMessage: errorMessage),
