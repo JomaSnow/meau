@@ -8,11 +8,14 @@ class CustomParagraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      value,
-      style: const TextStyle(
-          fontFamily: "Roboto", fontSize: 14, color: Design.lightGray),
-      textAlign: TextAlign.center,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: Text(
+        value,
+        style: const TextStyle(
+            fontFamily: "Roboto", fontSize: 14, color: Design.lightGray),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }

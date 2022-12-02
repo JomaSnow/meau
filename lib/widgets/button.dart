@@ -7,6 +7,7 @@ class Button extends StatelessWidget {
       required this.value,
       required this.onPressed,
       this.width = double.infinity,
+      this.disabled = false,
       this.color = Design.primaryYellow,
       this.fontColor = Design.darkerGray});
 
@@ -15,6 +16,7 @@ class Button extends StatelessWidget {
   final Color color;
   final Color fontColor;
   final double width;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +24,14 @@ class Button extends StatelessWidget {
       width: width,
       margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: disabled ? null : onPressed,
         style: ButtonStyle(
           elevation: MaterialStateProperty.all<double>(5.0),
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
               const EdgeInsets.symmetric(vertical: 12)),
-          backgroundColor: MaterialStateProperty.all<Color>(color),
+          backgroundColor: disabled
+              ? MaterialStateProperty.all<Color>(color.withOpacity(0.3))
+              : MaterialStateProperty.all<Color>(color),
           overlayColor:
               MaterialStateProperty.resolveWith((Set<MaterialState> states) {
             if (states.contains(MaterialState.hovered)) {

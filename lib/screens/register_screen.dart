@@ -5,13 +5,18 @@ import 'package:app/models/user_model.dart';
 import 'package:app/screens/intro_screen.dart';
 import 'package:app/util/design.dart';
 import 'package:app/util/dismiss_focus.dart';
+import 'package:app/util/validations.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/error_message.dart';
+import 'package:app/widgets/image_picker_button.dart';
 import 'package:app/widgets/input.dart';
 import 'package:app/widgets/label.dart';
+import 'package:app/widgets/loading.dart';
 import 'package:app/widgets/notice_card.dart';
 import 'package:app/widgets/page_template.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -22,81 +27,131 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final nameController = TextEditingController();
-
   final idadeController = TextEditingController();
-
   final emailController = TextEditingController();
-
   final estadoController = TextEditingController();
-
   final cidadeController = TextEditingController();
-
   final enderecoController = TextEditingController();
-
   final telefoneController = TextEditingController();
-
   final usernameController = TextEditingController();
-
   final passwordController = TextEditingController();
-
   final passwordConfirmController = TextEditingController();
 
+  final ImagePicker _picker = ImagePicker();
+  final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
+
   String errorMessage = "";
+  String imageErrorMessage = "";
+  bool loading = false;
+  Uint8List? imageBytes;
 
-  bool _validateFields() {
-    // password at least 6 characters long
-    if (passwordController.text.length < 6) {
+  void _pickImage() async {
+    try {
+      XFile? img = await _picker.pickImage(source: ImageSource.gallery);
+      Uint8List bytes = await img!.readAsBytes();
+
       setState(() {
-        errorMessage = "Senha deve conter pelo menos 6 caracteres.";
+        imageBytes = bytes;
+        imageErrorMessage = "";
       });
-      return false;
+    } catch (e) {
+      log(e.toString());
     }
+  }
 
-    // passwords match
-    if (passwordController.text != passwordConfirmController.text) {
-      setState(() {
-        errorMessage = "Senhas não são iguais.";
-      });
-      return false;
-    }
-
-    return true;
+  void _deleteImage() async {
+    setState(() {
+      imageBytes = null;
+      imageErrorMessage = "";
+    });
   }
 
   void _handleRegister(BuildContext context) async {
-    String err = "";
+    String signupErr = "";
     dismissFocus(context);
     setState(() {
       errorMessage = "";
+      imageErrorMessage = "";
+      loading = true;
     });
-    if (_validateFields()) {
-      CreateUserModel newUser = CreateUserModel(
-          nameController.text,
-          idadeController.text,
-          emailController.text,
-          estadoController.text,
-          cidadeController.text,
-          enderecoController.text,
-          telefoneController.text,
-          usernameController.text,
-          passwordController.text,
-          passwordConfirmController.text);
 
-      await signUp(newUser);
-      if (!mounted) return;
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const IntroScreen(),
-          ));
-    } else {
-      if (err.isNotEmpty) {
+    if (_registerFormKey.currentState!.validate()) {
+      UserModel? usr;
+
+      if (imageBytes == null) {
         setState(() {
-          errorMessage = err;
+          imageErrorMessage = "Selecione uma imagem.";
+          loading = false;
+        });
+        return;
+      }
+
+      const int fileSizeLimitBytes = 1000000; // 1MB
+      final int imageBytesSize = imageBytes!.length;
+      final bool isValidSize = imageBytesSize < fileSizeLimitBytes;
+      if (!isValidSize) {
+        setState(() {
+          imageErrorMessage = "Arquivo excede tamanho máximo (1MB).";
+          loading = false;
+        });
+        return;
+      }
+
+      usr = await getUserByEmail(emailController.text.trim());
+
+      if (usr!.email != "") {
+        setState(() {
+          errorMessage = "Já existe uma conta com este email.";
+          loading = false;
+        });
+        return;
+      }
+
+      usr = await getUserByUsername(usernameController.text.trim());
+
+      if (usr!.username != "") {
+        setState(() {
+          errorMessage =
+              "Este nome de usuário já está sendo utilizado.\nEscolha outro nome de usuário.";
+          loading = false;
+        });
+        return;
+      }
+
+      CreateUserModel newUser = CreateUserModel(
+        nameController.text.trim(),
+        idadeController.text.trim(),
+        emailController.text.trim(),
+        estadoController.text.trim().toUpperCase(),
+        cidadeController.text.trim(),
+        enderecoController.text.trim(),
+        telefoneController.text.trim(),
+        usernameController.text.trim(),
+        passwordController.text.trim(),
+        passwordConfirmController.text.trim(),
+        imageBytes!,
+      );
+
+      signupErr = await signUp(newUser);
+
+      if (signupErr.isEmpty) {
+        if (!mounted) return;
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const IntroScreen(),
+            ));
+      }
+    } else {
+      if (signupErr.isNotEmpty) {
+        setState(() {
+          errorMessage = signupErr;
         });
       }
-      log("not registered: $errorMessage");
     }
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
@@ -112,58 +167,113 @@ class _RegisterScreenState extends State<RegisterScreen> {
               "As informações preenchidas serão divulgadas apenas para a pessoa com a qual você realizar o processo de adoção e/ou apadrinhamento, após a formalização do processo.",
         ),
         const Label(text: "INFORMAÇÕES PESSOAIS"),
-        Input(
-          controller: nameController,
-          placeholder: "Nome Completo",
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: idadeController,
-          placeholder: "Idade",
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: emailController,
-          placeholder: "E-mail",
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: estadoController,
-          placeholder: "Estado",
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: cidadeController,
-          placeholder: "Cidade",
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: enderecoController,
-          placeholder: "Endereço",
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: telefoneController,
-          placeholder: "Telefone",
-          styleColor: Design.lightBlue,
-        ),
-        const Label(text: "INFORMAÇÕES DE PERFIL"),
-        Input(
-          controller: usernameController,
-          placeholder: "Nome de usuário",
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: passwordController,
-          placeholder: "Senha",
-          isPassword: true,
-          styleColor: Design.lightBlue,
-        ),
-        Input(
-          controller: passwordConfirmController,
-          placeholder: "Confirmação de senha",
-          isPassword: true,
-          styleColor: Design.lightBlue,
+        Form(
+          key: _registerFormKey,
+          child: Column(
+            children: [
+              Input(
+                controller: nameController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateName(value);
+                },
+                type: TextInputType.name,
+                placeholder: "Nome Completo",
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: idadeController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateIdade(value);
+                },
+                type: TextInputType.number,
+                placeholder: "Idade",
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: emailController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateEmail(value);
+                },
+                type: TextInputType.emailAddress,
+                placeholder: "E-mail",
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: estadoController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateEstado(value);
+                },
+                type: TextInputType.streetAddress,
+                placeholder: "Estado",
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: cidadeController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateCidade(value);
+                },
+                type: TextInputType.streetAddress,
+                placeholder: "Cidade",
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: enderecoController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateEndereco(value);
+                },
+                type: TextInputType.streetAddress,
+                placeholder: "Endereço",
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: telefoneController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateTelefone(value);
+                },
+                type: TextInputType.phone,
+                placeholder: "Telefone",
+                styleColor: Design.lightBlue,
+              ),
+              const Label(text: "INFORMAÇÕES DE PERFIL"),
+              Input(
+                controller: usernameController,
+                validationAction: (String? value) {
+                  return RegisterValidations.validateUsername(value);
+                },
+                type: TextInputType.text,
+                placeholder: "Nome de usuário",
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: passwordController,
+                validationAction: (String? value) {
+                  if (passwordController.text !=
+                      passwordConfirmController.text) {
+                    return "As senhas devem ser iguais.";
+                  }
+                  return RegisterValidations.validatePassword(value);
+                },
+                type: TextInputType.text,
+                placeholder: "Senha",
+                isPassword: true,
+                styleColor: Design.lightBlue,
+              ),
+              Input(
+                controller: passwordConfirmController,
+                validationAction: (String? value) {
+                  if (passwordController.text !=
+                      passwordConfirmController.text) {
+                    return "As senhas devem ser iguais.";
+                  }
+                  return RegisterValidations.validatePasswordConfirm(value);
+                },
+                type: TextInputType.text,
+                placeholder: "Confirmação de senha",
+                isPassword: true,
+                styleColor: Design.lightBlue,
+              ),
+            ],
+          ),
         ),
         const Label(
           text: "FOTO DE PERFIL",
@@ -173,13 +283,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
           children: [
             Column(
               children: [
-                const Label(
-                  text: "insert ImagePicker custom widget",
-                  color: Colors.red,
-                ),
-                ErrorMessage(errorMessage: errorMessage),
+                ImagePickerButton(
+                    imageBytes: imageBytes,
+                    error: imageErrorMessage,
+                    pickImage: _pickImage,
+                    deleteImage: _deleteImage),
+                loading
+                    ? const Loading()
+                    : ErrorMessage(errorMessage: errorMessage),
                 Button(
                   value: "FAZER CADASTRO",
+                  disabled: loading,
                   onPressed: () {
                     _handleRegister(context);
                   },

@@ -8,11 +8,19 @@ class Input extends StatelessWidget {
     this.styleColor = Design.primaryYellow,
     this.isPassword = false,
     this.placeholder = "",
+    this.type = TextInputType.text,
+    this.validationAction = _defaultValidate,
   });
   final TextEditingController controller;
   final Color styleColor;
   final bool isPassword;
   final String placeholder;
+  final TextInputType type;
+  final String? Function(String?) validationAction;
+
+  static String? _defaultValidate(String? s) {
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +28,8 @@ class Input extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(5, 0, 5, 5),
       child: TextFormField(
         obscureText: isPassword,
+        validator: validationAction,
+        keyboardType: type,
         controller: controller,
         style: const TextStyle(
           fontSize: 14,

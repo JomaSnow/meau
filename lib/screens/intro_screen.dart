@@ -1,7 +1,9 @@
-import 'dart:developer';
-
 import 'package:app/api/user_functions.dart';
+import 'package:app/screens/adopt_screen.dart';
+import 'package:app/screens/help_screen.dart';
 import 'package:app/screens/login_screen.dart';
+import 'package:app/screens/no_account_screen.dart';
+import 'package:app/screens/pet_register_screen.dart';
 import 'package:app/util/design.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/custom_paragraph.dart';
@@ -13,21 +15,6 @@ import 'package:flutter/material.dart';
 class IntroScreen extends StatelessWidget {
   const IntroScreen({super.key});
 
-  void _adoptFunction() {
-    log("adotar");
-    return;
-  }
-
-  void _helpFunction() {
-    log("ajudar");
-    return;
-  }
-
-  void _registerFunction() {
-    log("cadastrar animal");
-    return;
-  }
-
   @override
   Widget build(BuildContext context) {
     return PageTemplate(
@@ -37,28 +24,46 @@ class IntroScreen extends StatelessWidget {
       horizontalPadding: 63,
       children: [
         const PageTitle(title: "Olá!"),
-        Column(
-          children: const [
-            CustomParagraph(value: "Bem-vindo ao Meau!"),
-            CustomParagraph(
-                value:
-                    "Aqui você pode adotar, doar e ajudar cães e gatos com facilidade."),
-            CustomParagraph(value: "Qual o seu interesse?"),
-          ],
-        ),
+        const CustomParagraph(
+            value:
+                "Bem-vindo ao Meau!\nAqui você pode adotar, doar e ajudar cães e gatos com facilidade.\nQual o seu interesse?"),
         Column(
           children: [
             Button(
               value: "ADOTAR",
-              onPressed: _adoptFunction,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AdoptScreen(),
+                    ));
+              },
             ),
             Button(
               value: "AJUDAR",
-              onPressed: _helpFunction,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HelpScreen(),
+                    ));
+              },
             ),
             Button(
               value: "CADASTRAR ANIMAL",
-              onPressed: _registerFunction,
+              onPressed: () {
+                isLoggedIn()
+                    ? Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PetRegisterScreen(),
+                        ))
+                    : Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NoAccountScreen(),
+                        ));
+              },
             ),
           ],
         ),
