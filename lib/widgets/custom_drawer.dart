@@ -135,8 +135,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           margin: const EdgeInsets.only(left: 15),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
-                            child: Image.asset(
-                              "lib/assets/images/user_avatar_placeholder.jpg",
+                            child: Image.memory(
+                              currentUser!.image!,
                               height: 70,
                               width: 70,
                               fit: BoxFit.fill,

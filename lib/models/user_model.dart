@@ -62,4 +62,5 @@ class UserModel {
   String endereco;
   String telefone;
   String username;
+  Uint8List? image;
 }

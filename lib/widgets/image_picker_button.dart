@@ -80,49 +80,65 @@ class ImagePickerButton extends StatelessWidget {
                   : Container(),
             ],
           )
-        : Container(
-            margin: const EdgeInsets.symmetric(vertical: 30),
-            width: 180,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        : Column(
+            children: [
+              Container(
+                margin: error != ""
+                    ? const EdgeInsets.only(top: 30)
+                    : const EdgeInsets.symmetric(vertical: 30),
+                width: 180,
+                child: Column(
                   children: [
-                    IconButton(
-                      onPressed: pickImage,
-                      icon: const Icon(
-                        Icons.change_circle,
-                        color: Design.lightBlue,
-                        size: 24,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: pickImage,
+                          icon: const Icon(
+                            Icons.change_circle,
+                            color: Design.lightBlue,
+                            size: 24,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: deleteImage,
+                          icon: const Icon(
+                            Icons.delete_forever,
+                            color: Design.google,
+                            size: 24,
+                          ),
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      onPressed: deleteImage,
-                      icon: const Icon(
-                        Icons.delete_forever,
-                        color: Design.google,
-                        size: 24,
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: error != "" ? Colors.red : Design.accentBlue,
+                          style: BorderStyle.solid,
+                          width: 2,
+                        ),
+                      ),
+                      width: 180,
+                      height: 180,
+                      child: Image.memory(
+                        imageBytes!,
+                        fit: BoxFit.fill,
                       ),
                     ),
                   ],
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Design.accentBlue,
-                      style: BorderStyle.solid,
-                      width: 2,
-                    ),
-                  ),
-                  width: 180,
-                  height: 180,
-                  child: Image.memory(
-                    imageBytes!,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ],
-            ),
+              ),
+              error != ""
+                  ? Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      child: Text(
+                        error,
+                        style: const TextStyle(fontSize: 12, color: Colors.red),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  : Container(),
+            ],
           );
   }
 }

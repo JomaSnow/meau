@@ -52,6 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       setState(() {
         imageBytes = bytes;
+        imageErrorMessage = "";
       });
     } catch (e) {
       log(e.toString());
@@ -61,6 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _deleteImage() async {
     setState(() {
       imageBytes = null;
+      imageErrorMessage = "";
     });
   }
 
@@ -73,12 +75,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
       loading = true;
     });
 
-    if (true) {
+    if (_registerFormKey.currentState!.validate()) {
       UserModel? usr;
 
       if (imageBytes == null) {
         setState(() {
           imageErrorMessage = "Selecione uma imagem.";
+          loading = false;
+        });
+        return;
+      }
+
+      const int fileSizeLimitBytes = 1000000; // 1MB
+      final int imageBytesSize = imageBytes!.length;
+      final bool isValidSize = imageBytesSize < fileSizeLimitBytes;
+      if (!isValidSize) {
+        setState(() {
+          imageErrorMessage = "Arquivo excede tamanho máximo (1MB).";
           loading = false;
         });
         return;

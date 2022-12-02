@@ -10,6 +10,7 @@ bool isLoggedIn() {
 
 Future<UserModel> getUser(String uid) async {
   UserModel user = UserModel();
+  const oneMegaByte = 1024 * 1024;
 
   try {
     DocumentSnapshot<Map<String, dynamic>> docRef =
@@ -24,6 +25,11 @@ Future<UserModel> getUser(String uid) async {
     user.endereco = docRef.get("endereco");
     user.nome = docRef.get("nome");
     user.username = docRef.get("username");
+
+    user.image = await FirebaseStorage.instance
+        .ref()
+        .child("images/profiles/$uid")
+        .getData(2 * oneMegaByte);
   } catch (e) {
     log(e.toString());
   }
