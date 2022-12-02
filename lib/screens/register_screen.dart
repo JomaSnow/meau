@@ -73,7 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       loading = true;
     });
 
-    if (_registerFormKey.currentState!.validate()) {
+    if (true) {
       UserModel? usr;
 
       if (imageBytes == null) {
@@ -106,16 +106,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
 
       CreateUserModel newUser = CreateUserModel(
-          nameController.text.trim(),
-          idadeController.text.trim(),
-          emailController.text.trim(),
-          estadoController.text.trim().toUpperCase(),
-          cidadeController.text.trim(),
-          enderecoController.text.trim(),
-          telefoneController.text.trim(),
-          usernameController.text.trim(),
-          passwordController.text.trim(),
-          passwordConfirmController.text.trim());
+        nameController.text.trim(),
+        idadeController.text.trim(),
+        emailController.text.trim(),
+        estadoController.text.trim().toUpperCase(),
+        cidadeController.text.trim(),
+        enderecoController.text.trim(),
+        telefoneController.text.trim(),
+        usernameController.text.trim(),
+        passwordController.text.trim(),
+        passwordConfirmController.text.trim(),
+        imageBytes!,
+      );
 
       signupErr = await signUp(newUser);
 

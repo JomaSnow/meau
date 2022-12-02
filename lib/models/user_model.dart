@@ -1,15 +1,19 @@
+import 'package:flutter/services.dart';
+
 class CreateUserModel {
   CreateUserModel(
-      this.nome,
-      this.idade,
-      this.email,
-      this.estado,
-      this.cidade,
-      this.endereco,
-      this.telefone,
-      this.username,
-      this.password,
-      this.passwordConfirm);
+    this.nome,
+    this.idade,
+    this.email,
+    this.estado,
+    this.cidade,
+    this.endereco,
+    this.telefone,
+    this.username,
+    this.password,
+    this.passwordConfirm,
+    this.image,
+  );
 
   final String nome;
   final String idade;
@@ -21,6 +25,7 @@ class CreateUserModel {
   final String username;
   final String password;
   final String passwordConfirm;
+  final Uint8List image;
 
   Map<String, dynamic> createFields() {
     return {

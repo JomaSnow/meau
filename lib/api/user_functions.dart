@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:app/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 bool isLoggedIn() {
   return FirebaseAuth.instance.currentUser?.uid != null;
@@ -172,6 +173,11 @@ Future<String> signUp(CreateUserModel user) async {
         "telefone": user.telefone,
         "username": user.username,
       });
+
+      await FirebaseStorage.instance
+          .ref()
+          .child("images/profiles/${credential.user?.uid.toString()}")
+          .putData(user.image);
     } on FirebaseException catch (e) {
       return e.code;
     }
