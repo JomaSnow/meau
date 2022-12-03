@@ -173,10 +173,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             title: "Meu perfil",
                             onTap: () {
                               Navigator.pop(context);
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ProfileScreen()));
+                              Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(
+                                      builder: (context) => ProfileScreen(
+                                            user: currentUser!,
+                                            isProfileOwner: true,
+                                          )));
                             },
                           ),
                           DrawerItem(

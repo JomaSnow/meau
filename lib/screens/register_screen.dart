@@ -86,7 +86,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return;
       }
 
-      const int fileSizeLimitBytes = 1000000; // 1MB
+      const int fileSizeLimitBytes = 4000000; // 4MB
       final int imageBytesSize = imageBytes!.length;
       final bool isValidSize = imageBytesSize < fileSizeLimitBytes;
       if (!isValidSize) {
@@ -170,6 +170,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         Form(
           key: _registerFormKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Input(
                 controller: nameController,
