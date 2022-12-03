@@ -29,7 +29,7 @@ Future<UserModel> getUser(String uid) async {
     user.image = await FirebaseStorage.instance
         .ref()
         .child("images/profiles/$uid")
-        .getData(2 * oneMegaByte);
+        .getData(4 * oneMegaByte);
   } catch (e) {
     log(e.toString());
   }
@@ -188,5 +188,57 @@ Future<String> signUp(CreateUserModel user) async {
       return e.code;
     }
   }
+  return "";
+}
+
+Future<String> updateUser(String uid, UpdateUserModel user) async {
+  UserModel updatedUser = UserModel();
+  try {
+    updatedUser = await getUser(uid);
+
+    if (user.nome != "") {
+      updatedUser.nome = user.nome;
+    }
+    if (user.idade != "") {
+      updatedUser.idade = user.idade;
+    }
+    if (user.email != "") {
+      updatedUser.email = user.email;
+    }
+    if (user.estado != "") {
+      updatedUser.estado = user.estado;
+    }
+    if (user.cidade != "") {
+      updatedUser.cidade = user.cidade;
+    }
+    if (user.endereco != "") {
+      updatedUser.endereco = user.endereco;
+    }
+    if (user.telefone != "") {
+      updatedUser.telefone = user.telefone;
+    }
+    if (user.username != "") {
+      updatedUser.username = user.username;
+    }
+
+    await FirebaseFirestore.instance.collection("users").doc(uid).set({
+      "nome": updatedUser.nome,
+      "idade": updatedUser.idade,
+      "email": updatedUser.email,
+      "estado": updatedUser.estado,
+      "cidade": updatedUser.cidade,
+      "endereco": updatedUser.endereco,
+      "telefone": updatedUser.telefone,
+      "username": updatedUser.username,
+    });
+
+    await FirebaseStorage.instance
+        .ref()
+        .child("images/profiles/$uid")
+        .putData(user.image);
+  } on FirebaseException catch (e) {
+    return e.code;
+  }
+
   return "";
 }

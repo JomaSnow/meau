@@ -26,18 +26,30 @@ class CreateUserModel {
   final String password;
   final String passwordConfirm;
   final Uint8List image;
+}
 
-  Map<String, dynamic> createFields() {
-    return {
-      "nome": nome,
-      "idade": idade,
-      "estado": estado,
-      "cidade": cidade,
-      "endereco": endereco,
-      "telefone": telefone,
-      "username": username,
-    };
-  }
+class UpdateUserModel {
+  UpdateUserModel(
+    this.nome,
+    this.idade,
+    this.email,
+    this.estado,
+    this.cidade,
+    this.endereco,
+    this.telefone,
+    this.username,
+    this.image,
+  );
+
+  final String nome;
+  final String idade;
+  final String email;
+  final String estado;
+  final String cidade;
+  final String endereco;
+  final String telefone;
+  final String username;
+  final Uint8List image;
 }
 
 class UserModel {
