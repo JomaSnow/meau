@@ -1,4 +1,5 @@
 import 'package:app/api/user_functions.dart';
+import 'package:app/models/user_model.dart';
 import 'package:app/screens/adopt_screen.dart';
 import 'package:app/screens/help_screen.dart';
 import 'package:app/screens/login_screen.dart';
@@ -12,8 +13,30 @@ import 'package:app/widgets/page_template.dart';
 import 'package:app/widgets/page_title.dart';
 import 'package:flutter/material.dart';
 
-class IntroScreen extends StatelessWidget {
+class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
+
+  @override
+  State<IntroScreen> createState() => _IntroScreenState();
+}
+
+class _IntroScreenState extends State<IntroScreen> {
+  UserModel? currentUser;
+
+  @override
+  void initState() {
+    _setCurrentUser();
+    super.initState();
+  }
+
+  void _setCurrentUser() async {
+    UserModel? user = await getCurrentUser();
+    if (user != null) {
+      setState(() {
+        currentUser = user;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +76,13 @@ class IntroScreen extends StatelessWidget {
               value: "CADASTRAR ANIMAL",
               onPressed: () {
                 isLoggedIn()
-                    ? Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PetRegisterScreen(),
-                        ))
+                    ? Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) {
+                          return PetRegisterScreen(
+                            user: currentUser!,
+                          );
+                        },
+                      ))
                     : Navigator.push(
                         context,
                         MaterialPageRoute(

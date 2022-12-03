@@ -15,6 +15,7 @@ import 'package:app/widgets/image_picker_button.dart';
 import 'package:app/widgets/input.dart';
 import 'package:app/widgets/label.dart';
 import 'package:app/widgets/loading.dart';
+import 'package:app/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -181,16 +182,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
           Container(
-            margin: const EdgeInsets.only(top: 8),
-            child: Text(
-              widget.user.nome,
-              style: const TextStyle(
-                  color: Design.darkerGray,
-                  fontSize: 16,
-                  fontFamily: "Roboto",
-                  fontWeight: FontWeight.w500),
-            ),
-          ),
+              margin: const EdgeInsets.only(top: 8),
+              child: SectionTitle(title: widget.user.nome)),
           Column(
             children: [
               const Label(
