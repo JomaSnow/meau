@@ -9,7 +9,7 @@ import 'package:app/util/validations.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/error_message.dart';
 import 'package:app/widgets/image_picker_button.dart';
-import 'package:app/widgets/input.dart';
+import 'package:app/widgets/input_text.dart';
 import 'package:app/widgets/label.dart';
 import 'package:app/widgets/loading.dart';
 import 'package:app/widgets/notice_card.dart';
@@ -172,7 +172,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Input(
+              InputText(
                 controller: nameController,
                 validationAction: (String? value) {
                   return RegisterValidations.validateName(value);
@@ -181,7 +181,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 placeholder: "Nome Completo",
                 styleColor: Design.lightBlue,
               ),
-              Input(
+              InputText(
                 controller: idadeController,
                 validationAction: (String? value) {
                   return RegisterValidations.validateIdade(value);
@@ -190,7 +190,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 placeholder: "Idade",
                 styleColor: Design.lightBlue,
               ),
-              Input(
+              InputText(
                 controller: emailController,
                 validationAction: (String? value) {
                   return RegisterValidations.validateEmail(value);
@@ -199,7 +199,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 placeholder: "E-mail",
                 styleColor: Design.lightBlue,
               ),
-              Input(
+              InputText(
                 controller: estadoController,
                 validationAction: (String? value) {
                   return RegisterValidations.validateEstado(value);
@@ -208,7 +208,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 placeholder: "Estado",
                 styleColor: Design.lightBlue,
               ),
-              Input(
+              InputText(
                 controller: cidadeController,
                 validationAction: (String? value) {
                   return RegisterValidations.validateCidade(value);
@@ -217,7 +217,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 placeholder: "Cidade",
                 styleColor: Design.lightBlue,
               ),
-              Input(
+              InputText(
                 controller: enderecoController,
                 validationAction: (String? value) {
                   return RegisterValidations.validateEndereco(value);
@@ -226,7 +226,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 placeholder: "Endereço",
                 styleColor: Design.lightBlue,
               ),
-              Input(
+              InputText(
                 controller: telefoneController,
                 validationAction: (String? value) {
                   return RegisterValidations.validateTelefone(value);
@@ -236,7 +236,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 styleColor: Design.lightBlue,
               ),
               const Label(text: "INFORMAÇÕES DE PERFIL"),
-              Input(
+              InputText(
                 controller: usernameController,
                 validationAction: (String? value) {
                   return RegisterValidations.validateUsername(value);
@@ -245,7 +245,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 placeholder: "Nome de usuário",
                 styleColor: Design.lightBlue,
               ),
-              Input(
+              InputText(
                 controller: passwordController,
                 validationAction: (String? value) {
                   if (passwordController.text !=
@@ -259,7 +259,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 isPassword: true,
                 styleColor: Design.lightBlue,
               ),
-              Input(
+              InputText(
                 controller: passwordConfirmController,
                 validationAction: (String? value) {
                   if (passwordController.text !=

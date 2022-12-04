@@ -12,7 +12,7 @@ import 'package:app/widgets/button.dart';
 import 'package:app/widgets/custom_paragraph.dart';
 import 'package:app/widgets/error_message.dart';
 import 'package:app/widgets/image_picker_button.dart';
-import 'package:app/widgets/input.dart';
+import 'package:app/widgets/input_text.dart';
 import 'package:app/widgets/label.dart';
 import 'package:app/widgets/loading.dart';
 import 'package:app/widgets/section_title.dart';
@@ -191,7 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 text: "NOME COMPLETO",
               ),
               isEditing
-                  ? Input(
+                  ? InputText(
                       validationAction: (String? value) {
                         return UpdateValidations.validateName(value);
                       },
@@ -209,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 text: "IDADE",
               ),
               isEditing
-                  ? Input(
+                  ? InputText(
                       validationAction: (String? value) {
                         return UpdateValidations.validateIdade(value);
                       },
@@ -237,7 +237,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       margin: EdgeInsets.only(bottom: 6, top: 24),
                       text: "ESTADO",
                     ),
-                    Input(
+                    InputText(
                       validationAction: (String? value) {
                         return UpdateValidations.validateEstado(value);
                       },
@@ -249,7 +249,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       margin: EdgeInsets.only(bottom: 6, top: 24),
                       text: "CIDADE",
                     ),
-                    Input(
+                    InputText(
                       validationAction: (String? value) {
                         return UpdateValidations.validateCidade(value);
                       },
@@ -276,7 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 text: "ENDEREÇO",
               ),
               isEditing
-                  ? Input(
+                  ? InputText(
                       validationAction: (String? value) {
                         return UpdateValidations.validateEndereco(value);
                       },
@@ -294,7 +294,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 text: "TELEFONE",
               ),
               isEditing
-                  ? Input(
+                  ? InputText(
                       validationAction: (String? value) {
                         return UpdateValidations.validateTelefone(value);
                       },
@@ -313,7 +313,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 text: "NOME DE USUÁRIO",
               ),
               isEditing
-                  ? Input(
+                  ? InputText(
                       validationAction: (String? value) {
                         return UpdateValidations.validateUsername(value);
                       },

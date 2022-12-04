@@ -6,7 +6,7 @@ import 'package:app/util/dismiss_focus.dart';
 import 'package:app/util/validations.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/error_message.dart';
-import 'package:app/widgets/input.dart';
+import 'package:app/widgets/input_text.dart';
 import 'package:app/widgets/link_button.dart';
 import 'package:app/widgets/page_template.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
             key: _loginFormKey,
             child: Column(
               children: [
-                Input(
+                InputText(
                     controller: usernameController,
                     type: TextInputType.emailAddress,
                     validationAction: (String? value) {
@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     styleColor: Design.lightBlue,
                     placeholder: "Nome de usuário"),
-                Input(
+                InputText(
                     controller: passwordController,
                     type: TextInputType.text,
                     validationAction: (String? value) {

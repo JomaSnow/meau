@@ -4,7 +4,7 @@ import 'package:app/util/design.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/custom_paragraph.dart';
 import 'package:app/widgets/image_picker_multiple_button.dart';
-import 'package:app/widgets/input.dart';
+import 'package:app/widgets/input_text.dart';
 import 'package:app/widgets/label.dart';
 import 'package:app/widgets/pet_register_adopt.dart';
 import 'package:app/widgets/pet_register_foster.dart';
@@ -147,7 +147,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                       text: "NOME DO ANIMAL",
                       margin: EdgeInsets.only(top: 20),
                       color: Design.primaryYellow),
-                  Input(
+                  InputText(
                     controller: nomeController,
                     placeholder: "Nome do animal",
                   ),
@@ -183,7 +183,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                       text: "TEMPERAMENTO",
                       margin: EdgeInsets.only(top: 20),
                       color: Design.primaryYellow),
-                  Input(
+                  InputText(
                     controller: nomeController,
                     placeholder: "Doenças do animal",
                   ),
@@ -194,7 +194,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                       text: "SOBRE O ANIMAL",
                       margin: EdgeInsets.only(top: 20),
                       color: Design.primaryYellow),
-                  Input(
+                  InputText(
                     controller: nomeController,
                     placeholder: "Compartilhe a história do animal",
                   ),
