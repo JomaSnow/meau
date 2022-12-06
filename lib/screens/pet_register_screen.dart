@@ -1,9 +1,12 @@
-import 'dart:developer';
-
+import 'package:app/api/pet_functions.dart';
+import 'package:app/models/pet_model.dart';
+import 'package:app/screens/adopt_screen.dart';
 import 'package:app/util/design.dart';
+import 'package:app/util/dismiss_focus.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/custom_paragraph.dart';
 import 'package:app/widgets/image_picker_multiple_button.dart';
+import 'package:app/widgets/input_radio.dart';
 import 'package:app/widgets/input_text.dart';
 import 'package:app/widgets/label.dart';
 import 'package:app/widgets/pet_register_adopt.dart';
@@ -14,6 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import '../models/user_model.dart';
+import '../widgets/error_message.dart';
+import '../widgets/loading.dart';
 import '../widgets/page_template.dart';
 
 class PetRegisterScreen extends StatefulWidget {
@@ -30,13 +35,142 @@ class PetRegisterScreen extends StatefulWidget {
 
 class _PetRegisterScreenState extends State<PetRegisterScreen> {
   final nomeController = TextEditingController();
-  final ImagePicker _picker = ImagePicker();
+  String exigencias = "";
+  final List<String> exigenciasArray = [
+    "Termo de adoção",
+    "Fotos da casa",
+    "Visita prévia ao animal",
+    "Acompanhamento pós adoção",
+  ];
+  String especie = "";
+  final List<String> especieArray = [
+    "Cachorro",
+    "Gato",
+  ];
+  String sexo = "";
+  final List<String> sexoArray = [
+    "Macho",
+    "Fêmea",
+  ];
+  String porte = "";
+  final List<String> porteArray = [
+    "Pequeno",
+    "Médio",
+    "Grande",
+  ];
+  String idade = "";
+  final List<String> idadeArray = [
+    "Filhote",
+    "Adulto",
+    "Idoso",
+  ];
+  String temperamento = "";
+  final List<String> temperamentoArray = [
+    "Brincalhão",
+    "Tímido",
+    "Calmo",
+    "Guarda",
+    "Amoroso",
+    "Preguiçoso",
+  ];
+  String saude = "";
+  final List<String> saudeArray = [
+    "Vacinado",
+    "Vermifugado",
+    "Castrado",
+    "Doente",
+  ];
+  final doencasController = TextEditingController();
+  final sobreController = TextEditingController();
 
   bool isAdopt = false;
   bool isFoster = false;
   bool isHelp = false;
   String imageErrorMessage = "";
   List<Uint8List?> imageBytes = [];
+
+  final ImagePicker _picker = ImagePicker();
+  final GlobalKey<FormState> _registerPetFormKey = GlobalKey<FormState>();
+
+  String errorMessage = "";
+  bool loading = false;
+
+  void changeExigencias(String? value) {
+    setState(() {
+      exigencias = exigenciasArray.firstWhere(
+        (element) => element == value,
+        orElse: () {
+          return "";
+        },
+      );
+    });
+  }
+
+  void changeEspecie(String? value) {
+    setState(() {
+      especie = especieArray.firstWhere(
+        (element) => element == value,
+        orElse: () {
+          return "";
+        },
+      );
+    });
+  }
+
+  void changeSexo(String? value) {
+    setState(() {
+      sexo = sexoArray.firstWhere(
+        (element) => element == value,
+        orElse: () {
+          return "";
+        },
+      );
+    });
+  }
+
+  void changePorte(String? value) {
+    setState(() {
+      porte = porteArray.firstWhere(
+        (element) => element == value,
+        orElse: () {
+          return "";
+        },
+      );
+    });
+  }
+
+  void changeIdade(String? value) {
+    setState(() {
+      idade = idadeArray.firstWhere(
+        (element) => element == value,
+        orElse: () {
+          return "";
+        },
+      );
+    });
+  }
+
+  void changeTemperamento(String? value) {
+    setState(() {
+      temperamento = temperamentoArray.firstWhere(
+        (element) => element == value,
+        orElse: () {
+          return "";
+        },
+      );
+    });
+  }
+
+  void changeSaude(String? value) {
+    setState(() {
+      saude = saudeArray.firstWhere(
+        (element) => element == value,
+        orElse: () {
+          return "";
+        },
+      );
+    });
+  }
 
   void _pickImage() async {
     try {
@@ -52,7 +186,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
         imageErrorMessage = "";
       });
     } catch (e) {
-      log(e.toString());
+      imageErrorMessage = e.toString();
     }
   }
 
@@ -63,7 +197,46 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
     });
   }
 
-  void _handleRegister() {}
+  void _handleRegister() async {
+    String signupErr = "";
+    dismissFocus(context);
+    setState(() {
+      errorMessage = "";
+      imageErrorMessage = "";
+      loading = true;
+    });
+
+    CreatePetModel newPet = CreatePetModel(
+        nomeController.text,
+        especie,
+        sexo,
+        porte,
+        idade,
+        temperamento,
+        saude,
+        doencasController.text,
+        exigencias,
+        sobreController.text,
+        widget.user.id,
+        isAdopt,
+        isFoster,
+        isHelp);
+
+    signupErr = await create(newPet);
+
+    if (signupErr.isEmpty) {
+      if (!mounted) return;
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AdoptScreen(),
+          ));
+    }
+
+    setState(() {
+      loading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,27 +340,61 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                       text: "ESPÉCIE",
                       margin: EdgeInsets.only(top: 0),
                       color: Design.primaryYellow),
+                  InputRadio(
+                      groupValue: especie,
+                      valueArray: especieArray,
+                      onChanged: changeEspecie),
                   const Label(
                       text: "SEXO",
                       margin: EdgeInsets.only(top: 20),
                       color: Design.primaryYellow),
+                  InputRadio(
+                      groupValue: sexo,
+                      valueArray: sexoArray,
+                      onChanged: changeSexo),
                   const Label(
                       text: "PORTE",
                       margin: EdgeInsets.only(top: 20),
                       color: Design.primaryYellow),
+                  InputRadio(
+                      groupValue: porte,
+                      valueArray: porteArray,
+                      onChanged: changePorte),
                   const Label(
                       text: "IDADE",
                       margin: EdgeInsets.only(top: 20),
                       color: Design.primaryYellow),
+                  InputRadio(
+                      groupValue: idade,
+                      valueArray: idadeArray,
+                      onChanged: changeIdade),
                   const Label(
                       text: "TEMPERAMENTO",
                       margin: EdgeInsets.only(top: 20),
                       color: Design.primaryYellow),
+                  InputRadio(
+                      groupValue: temperamento,
+                      valueArray: temperamentoArray,
+                      onChanged: changeTemperamento),
+                  const Label(
+                      text: "SAÚDE",
+                      margin: EdgeInsets.only(top: 20),
+                      color: Design.primaryYellow),
+                  InputRadio(
+                      groupValue: saude,
+                      valueArray: saudeArray,
+                      onChanged: changeSaude),
                   InputText(
-                    controller: nomeController,
+                    controller: doencasController,
                     placeholder: "Doenças do animal",
                   ),
-                  isAdopt ? const AdoptWidget() : Container(),
+                  isAdopt
+                      ? AdoptWidget(
+                          changeExigencias: changeExigencias,
+                          exigencias: exigencias,
+                          exigenciasArray: exigenciasArray,
+                        )
+                      : Container(),
                   isFoster ? const FosterWidget() : Container(),
                   isHelp ? const HelpWidget() : Container(),
                   const Label(
@@ -195,9 +402,12 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                       margin: EdgeInsets.only(top: 20),
                       color: Design.primaryYellow),
                   InputText(
-                    controller: nomeController,
+                    controller: sobreController,
                     placeholder: "Compartilhe a história do animal",
                   ),
+                  loading
+                      ? const Loading()
+                      : ErrorMessage(errorMessage: errorMessage),
                   Center(
                     child: Container(
                       margin: const EdgeInsets.symmetric(vertical: 20),
