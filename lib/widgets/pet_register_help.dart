@@ -108,10 +108,12 @@ class HelpWidgetState extends State<HelpWidget> {
             );
           }).toList(),
         ),
-        InputText(
-          controller: widget.medicamentoController,
-          placeholder: "Nome do medicamento",
-        ),
+        necessidades1BoolArray[2]
+            ? InputText(
+                controller: widget.medicamentoController,
+                placeholder: "Nome do medicamento",
+              )
+            : Container(),
         InputSingleCheckbox(
           onChanged: (bool? checked) {
             String currentNecessidades;
@@ -139,10 +141,12 @@ class HelpWidgetState extends State<HelpWidget> {
           title: necessidade2String,
           singleLine: true,
         ),
-        InputText(
-          controller: widget.objetosController,
-          placeholder: "Especifique o(s) objeto(s)",
-        ),
+        necessidade2Bool
+            ? InputText(
+                controller: widget.objetosController,
+                placeholder: "Especifique o(s) objeto(s)",
+              )
+            : Container(),
       ],
     );
   }

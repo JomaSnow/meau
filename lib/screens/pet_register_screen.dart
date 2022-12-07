@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:app/api/pet_functions.dart';
 import 'package:app/models/pet_model.dart';
-import 'package:app/screens/adopt_screen.dart';
+import 'package:app/screens/intro_screen.dart';
+import 'package:app/screens/pet_register_success_screen.dart';
 import 'package:app/util/design.dart';
 import 'package:app/util/dismiss_focus.dart';
 import 'package:app/widgets/button.dart';
@@ -273,6 +274,16 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
       loading = true;
     });
 
+    if (!saude.contains("Doente")) {
+      doencasController.text = "";
+    }
+    if (!necessidades.contains("Objetos")) {
+      objetosController.text = "";
+    }
+    if (!necessidades.contains("Medicamento")) {
+      medicamentoController.text = "";
+    }
+
     CreatePetModel newPet = CreatePetModel(
         nomeController.text,
         especie,
@@ -300,7 +311,12 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const AdoptScreen(),
+            builder: (context) => const IntroScreen(),
+          ));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PetRegisterSuccessScreen(),
           ));
     }
 
@@ -483,10 +499,12 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                       );
                     }).toList(),
                   ),
-                  InputText(
-                    controller: doencasController,
-                    placeholder: "Doenças do animal",
-                  ),
+                  saudeBoolArray[3]
+                      ? InputText(
+                          controller: doencasController,
+                          placeholder: "Doenças do animal",
+                        )
+                      : Container(),
                   isAdopt
                       ? AdoptWidget(
                           changeExigencias: changeExigencias,
