@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../util/design.dart';
+
 class InputRadio extends StatelessWidget {
   const InputRadio({
     super.key,
     required this.groupValue,
+    this.enabled = true,
     required this.valueArray,
     required this.onChanged,
     this.singleLine = false,
@@ -11,6 +14,7 @@ class InputRadio extends StatelessWidget {
 
   final List<String> valueArray;
   final String groupValue;
+  final bool enabled;
   final Function(String?) onChanged;
   final bool singleLine;
 
@@ -23,9 +27,17 @@ class InputRadio extends StatelessWidget {
                 children: [
                   Radio(
                       value: elem,
+                      activeColor: Design.primaryYellow,
                       groupValue: groupValue,
-                      onChanged: onChanged),
-                  Text(elem),
+                      onChanged: enabled ? onChanged : null),
+                  Text(
+                    elem,
+                    style: TextStyle(
+                      fontFamily: "Roboto",
+                      fontSize: 14,
+                      color: enabled ? Design.lightGray : Design.lighterGray,
+                    ),
+                  ),
                 ],
               ))
           .toList(),
