@@ -40,7 +40,6 @@ class _AdoptWidgetState extends State<AdoptWidget> {
     false,
     false,
     false,
-    false,
   ];
   List<String> periodStringArray = [
     "1 mês",

@@ -8,6 +8,7 @@ import 'package:app/util/dismiss_focus.dart';
 import 'package:app/widgets/button.dart';
 import 'package:app/widgets/custom_paragraph.dart';
 import 'package:app/widgets/image_picker_multiple_button.dart';
+import 'package:app/widgets/input_checkbox.dart';
 import 'package:app/widgets/input_radio.dart';
 import 'package:app/widgets/input_text.dart';
 import 'package:app/widgets/label.dart';
@@ -38,6 +39,7 @@ class PetRegisterScreen extends StatefulWidget {
 class _PetRegisterScreenState extends State<PetRegisterScreen> {
   final nomeController = TextEditingController();
   String exigencias = "";
+  String foster = "";
 
   String especie = "";
   final List<String> especieArray = [
@@ -62,7 +64,9 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
     "Idoso",
   ];
   String temperamento = "";
-  final List<String> temperamentoArray = [
+  String newTemperamento = "";
+  int temperamentoIndex = 0;
+  final List<String> temperamentoStringArray = [
     "Brincalhão",
     "Tímido",
     "Calmo",
@@ -70,12 +74,28 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
     "Amoroso",
     "Preguiçoso",
   ];
+  List<bool> temperamentoBoolArray = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ];
   String saude = "";
-  final List<String> saudeArray = [
+  String newSaude = "";
+  int saudeIndex = 0;
+  final List<String> saudeStringArray = [
     "Vacinado",
     "Vermifugado",
     "Castrado",
     "Doente",
+  ];
+  List<bool> saudeBoolArray = [
+    false,
+    false,
+    false,
+    false,
   ];
   final doencasController = TextEditingController();
   final sobreController = TextEditingController();
@@ -87,7 +107,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
   List<Uint8List?> imageBytes = [];
 
   final ImagePicker _picker = ImagePicker();
-  final GlobalKey<FormState> _registerPetFormKey = GlobalKey<FormState>();
+  // final GlobalKey<FormState> _registerPetFormKey = GlobalKey<FormState>();
 
   String errorMessage = "";
   bool loading = false;
@@ -97,6 +117,13 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
       exigencias = value!;
     });
     log(exigencias);
+  }
+
+  void changeFoster(String? value) {
+    setState(() {
+      foster = value!;
+    });
+    log(foster);
   }
 
   void changeEspecie(String? value) {
@@ -145,24 +172,16 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
 
   void changeTemperamento(String? value) {
     setState(() {
-      temperamento = temperamentoArray.firstWhere(
-        (element) => element == value,
-        orElse: () {
-          return "";
-        },
-      );
+      temperamento = value!;
     });
+    log(temperamento);
   }
 
   void changeSaude(String? value) {
     setState(() {
-      saude = saudeArray.firstWhere(
-        (element) => element == value,
-        orElse: () {
-          return "";
-        },
-      );
+      saude = value!;
     });
+    log(saude);
   }
 
   void _pickImage() async {
@@ -188,6 +207,51 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
       imageBytes = [];
       imageErrorMessage = "";
     });
+  }
+
+  void _onTemperamentoChanged(bool? checked) {
+    String currentTemperamento;
+    if (!checked!) {
+      currentTemperamento = newTemperamento.replaceAll(
+          "${temperamentoStringArray[temperamentoIndex]}, ", "");
+      setState(() {
+        newTemperamento = currentTemperamento;
+        temperamentoBoolArray[temperamentoIndex] = false;
+      });
+    } else {
+      currentTemperamento =
+          "$newTemperamento${temperamentoStringArray[temperamentoIndex]}, ";
+      setState(() {
+        newTemperamento = currentTemperamento;
+        temperamentoBoolArray[temperamentoIndex] = true;
+      });
+    }
+    changeTemperamento(newTemperamento.isNotEmpty
+        ? newTemperamento
+            .trim()
+            .replaceRange(newTemperamento.length - 2, null, ".")
+        : "");
+  }
+
+  void _onSaudeChanged(bool? checked) {
+    String currentSaude;
+    if (!checked!) {
+      currentSaude =
+          newSaude.replaceAll("${saudeStringArray[saudeIndex]}, ", "");
+      setState(() {
+        newSaude = currentSaude;
+        saudeBoolArray[saudeIndex] = false;
+      });
+    } else {
+      currentSaude = "$newSaude${saudeStringArray[saudeIndex]}, ";
+      setState(() {
+        newSaude = currentSaude;
+        saudeBoolArray[saudeIndex] = true;
+      });
+    }
+    changeSaude(newSaude.isNotEmpty
+        ? newSaude.trim().replaceRange(newSaude.length - 2, null, ".")
+        : "");
   }
 
   void _handleRegister(BuildContext context) async {
@@ -365,18 +429,46 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                       text: "TEMPERAMENTO",
                       margin: EdgeInsets.only(top: 20),
                       color: Design.primaryYellow),
-                  InputRadio(
-                      groupValue: temperamento,
-                      valueArray: temperamentoArray,
-                      onChanged: changeTemperamento),
+                  Wrap(
+                    children: temperamentoStringArray.map((elem) {
+                      setState(() {
+                        temperamentoIndex =
+                            temperamentoStringArray.indexOf(elem);
+                      });
+                      return InputSingleCheckbox(
+                        onChanged: (bool? checked) {
+                          setState(() {
+                            temperamentoIndex =
+                                temperamentoStringArray.indexOf(elem);
+                          });
+                          return _onTemperamentoChanged(checked);
+                        },
+                        value: temperamentoBoolArray[temperamentoIndex],
+                        title: elem,
+                      );
+                    }).toList(),
+                  ),
                   const Label(
                       text: "SAÚDE",
                       margin: EdgeInsets.only(top: 20),
                       color: Design.primaryYellow),
-                  InputRadio(
-                      groupValue: saude,
-                      valueArray: saudeArray,
-                      onChanged: changeSaude),
+                  Wrap(
+                    children: saudeStringArray.map((elem) {
+                      setState(() {
+                        saudeIndex = saudeStringArray.indexOf(elem);
+                      });
+                      return InputSingleCheckbox(
+                        onChanged: (bool? checked) {
+                          setState(() {
+                            saudeIndex = saudeStringArray.indexOf(elem);
+                          });
+                          return _onSaudeChanged(checked);
+                        },
+                        value: saudeBoolArray[saudeIndex],
+                        title: elem,
+                      );
+                    }).toList(),
+                  ),
                   InputText(
                     controller: doencasController,
                     placeholder: "Doenças do animal",
@@ -387,7 +479,12 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                           exigencias: exigencias,
                         )
                       : Container(),
-                  isFoster ? const FosterWidget() : Container(),
+                  isFoster
+                      ? FosterWidget(
+                          changeExigencias: changeFoster,
+                          exigencias: foster,
+                        )
+                      : Container(),
                   isHelp ? const HelpWidget() : Container(),
                   const Label(
                       text: "SOBRE O ANIMAL",
