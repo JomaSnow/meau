@@ -91,7 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final bool isValidSize = imageBytesSize < fileSizeLimitBytes;
       if (!isValidSize) {
         setState(() {
-          imageErrorMessage = "Arquivo excede tamanho máximo (1MB).";
+          imageErrorMessage = "Arquivo excede tamanho máximo (4MB).";
           loading = false;
         });
         return;

@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 class CreatePetModel {
   CreatePetModel(
     this.nome,
@@ -18,6 +20,7 @@ class CreatePetModel {
     this.isAdopt,
     this.isFoster,
     this.isHelp,
+    this.imgArr,
   );
 
   final String nome;
@@ -38,4 +41,5 @@ class CreatePetModel {
   final bool isAdopt;
   final bool isFoster;
   final bool isHelp;
+  final List<Uint8List?> imgArr;
 }

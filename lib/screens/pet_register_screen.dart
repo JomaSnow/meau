@@ -311,27 +311,52 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
           signupErr = "Preencha todos os campos.";
         });
       }
+
+      if (imageBytes.length < 3) {
+        setState(() {
+          imageErrorMessage = "Selecione ao menos 3 imagens.";
+          loading = false;
+        });
+        return;
+      }
+
+      for (var img in imageBytes) {
+        const int fileSizeLimitBytes = 4000000; // 4MB
+        int imageBytesSize = img!.length;
+        final bool isValidSize = imageBytesSize < fileSizeLimitBytes;
+        if (!isValidSize) {
+          setState(() {
+            imageErrorMessage =
+                "Arquivos excedem tamanho máximo por foto (4MB).";
+            loading = false;
+          });
+          return;
+        }
+      }
+
       try {
         if (signupErr.isEmpty) {
           CreatePetModel newPet = CreatePetModel(
-              nomeController.text,
-              especie,
-              sexo,
-              porte,
-              idade,
-              temperamento,
-              saude,
-              doencasController.text,
-              exigencias,
-              foster,
-              necessidades,
-              medicamentoController.text,
-              objetosController.text,
-              sobreController.text,
-              widget.user.id,
-              isAdopt,
-              isFoster,
-              isHelp);
+            nomeController.text,
+            especie,
+            sexo,
+            porte,
+            idade,
+            temperamento,
+            saude,
+            doencasController.text,
+            exigencias,
+            foster,
+            necessidades,
+            medicamentoController.text,
+            objetosController.text,
+            sobreController.text,
+            widget.user.id,
+            isAdopt,
+            isFoster,
+            isHelp,
+            imageBytes,
+          );
 
           signupErr = await create(newPet);
         }
