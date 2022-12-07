@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/api/pet_functions.dart';
 import 'package:app/models/pet_model.dart';
 import 'package:app/screens/adopt_screen.dart';
@@ -36,12 +38,7 @@ class PetRegisterScreen extends StatefulWidget {
 class _PetRegisterScreenState extends State<PetRegisterScreen> {
   final nomeController = TextEditingController();
   String exigencias = "";
-  final List<String> exigenciasArray = [
-    "Termo de adoção",
-    "Fotos da casa",
-    "Visita prévia ao animal",
-    "Acompanhamento pós adoção",
-  ];
+
   String especie = "";
   final List<String> especieArray = [
     "Cachorro",
@@ -97,13 +94,9 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
 
   void changeExigencias(String? value) {
     setState(() {
-      exigencias = exigenciasArray.firstWhere(
-        (element) => element == value,
-        orElse: () {
-          return "";
-        },
-      );
+      exigencias = value!;
     });
+    log(exigencias);
   }
 
   void changeEspecie(String? value) {
@@ -197,7 +190,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
     });
   }
 
-  void _handleRegister() async {
+  void _handleRegister(BuildContext context) async {
     String signupErr = "";
     dismissFocus(context);
     setState(() {
@@ -392,7 +385,6 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                       ? AdoptWidget(
                           changeExigencias: changeExigencias,
                           exigencias: exigencias,
-                          exigenciasArray: exigenciasArray,
                         )
                       : Container(),
                   isFoster ? const FosterWidget() : Container(),
@@ -405,20 +397,26 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                     controller: sobreController,
                     placeholder: "Compartilhe a história do animal",
                   ),
-                  loading
-                      ? const Loading()
-                      : ErrorMessage(errorMessage: errorMessage),
                   Center(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 20),
-                      child: Button(
-                          width: 232,
-                          value: isAdopt
-                              ? "COLOCAR PARA ADOÇÃO"
-                              : isFoster
-                                  ? "PROCURAR PADRINHO"
-                                  : "PROCURAR AJUDA",
-                          onPressed: _handleRegister),
+                    child: Column(
+                      children: [
+                        loading
+                            ? const Loading()
+                            : ErrorMessage(errorMessage: errorMessage),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 20),
+                          child: Button(
+                              width: 232,
+                              value: isAdopt
+                                  ? "COLOCAR PARA ADOÇÃO"
+                                  : isFoster
+                                      ? "PROCURAR PADRINHO"
+                                      : "PROCURAR AJUDA",
+                              onPressed: () {
+                                _handleRegister(context);
+                              }),
+                        ),
+                      ],
                     ),
                   ),
                 ],
