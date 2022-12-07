@@ -123,7 +123,7 @@ class FosterWidgetState extends State<FosterWidget> {
       children: [
         const Label(
           text: "EXIGÊNCIAS PARA APADRINHAMENTO",
-          color: Design.primaryYellow,
+          color: Design.darkYellow,
         ),
         Wrap(
           children: exigencias1StringArray.map((elem) {

@@ -38,7 +38,10 @@ class PetRegisterScreen extends StatefulWidget {
 
 class _PetRegisterScreenState extends State<PetRegisterScreen> {
   final nomeController = TextEditingController();
+  final medicamentoController = TextEditingController();
+  final objetosController = TextEditingController();
   String exigencias = "";
+  String necessidades = "";
   String foster = "";
 
   String especie = "";
@@ -124,6 +127,13 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
       foster = value!;
     });
     log(foster);
+  }
+
+  void changeNecessidades(String? value) {
+    setState(() {
+      necessidades = value!;
+    });
+    log(necessidades);
   }
 
   void changeEspecie(String? value) {
@@ -273,6 +283,10 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
         saude,
         doencasController.text,
         exigencias,
+        foster,
+        necessidades,
+        medicamentoController.text,
+        objetosController.text,
         sobreController.text,
         widget.user.id,
         isAdopt,
@@ -376,7 +390,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                   const Label(
                       text: "NOME DO ANIMAL",
                       margin: EdgeInsets.only(top: 20),
-                      color: Design.primaryYellow),
+                      color: Design.darkYellow),
                   InputText(
                     controller: nomeController,
                     placeholder: "Nome do animal",
@@ -384,7 +398,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                   const Label(
                       text: "FOTOS DO ANIMAL",
                       margin: EdgeInsets.only(top: 20),
-                      color: Design.primaryYellow),
+                      color: Design.darkYellow),
                   Container(
                     margin: const EdgeInsets.only(top: 20),
                     child: ImagePickerMultipleButton(
@@ -396,7 +410,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                   const Label(
                       text: "ESPÉCIE",
                       margin: EdgeInsets.only(top: 0),
-                      color: Design.primaryYellow),
+                      color: Design.darkYellow),
                   InputRadio(
                       groupValue: especie,
                       valueArray: especieArray,
@@ -404,7 +418,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                   const Label(
                       text: "SEXO",
                       margin: EdgeInsets.only(top: 20),
-                      color: Design.primaryYellow),
+                      color: Design.darkYellow),
                   InputRadio(
                       groupValue: sexo,
                       valueArray: sexoArray,
@@ -412,7 +426,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                   const Label(
                       text: "PORTE",
                       margin: EdgeInsets.only(top: 20),
-                      color: Design.primaryYellow),
+                      color: Design.darkYellow),
                   InputRadio(
                       groupValue: porte,
                       valueArray: porteArray,
@@ -420,7 +434,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                   const Label(
                       text: "IDADE",
                       margin: EdgeInsets.only(top: 20),
-                      color: Design.primaryYellow),
+                      color: Design.darkYellow),
                   InputRadio(
                       groupValue: idade,
                       valueArray: idadeArray,
@@ -428,7 +442,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                   const Label(
                       text: "TEMPERAMENTO",
                       margin: EdgeInsets.only(top: 20),
-                      color: Design.primaryYellow),
+                      color: Design.darkYellow),
                   Wrap(
                     children: temperamentoStringArray.map((elem) {
                       setState(() {
@@ -451,7 +465,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                   const Label(
                       text: "SAÚDE",
                       margin: EdgeInsets.only(top: 20),
-                      color: Design.primaryYellow),
+                      color: Design.darkYellow),
                   Wrap(
                     children: saudeStringArray.map((elem) {
                       setState(() {
@@ -485,7 +499,15 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
                           exigencias: foster,
                         )
                       : Container(),
-                  isHelp ? const HelpWidget() : Container(),
+                  isHelp
+                      ? HelpWidget(
+                          changeNecessidades: changeNecessidades,
+                          necessidades: necessidades,
+                          medicamentoController: medicamentoController,
+                          objetosController: objetosController,
+                          showTitle: isAdopt || isFoster,
+                        )
+                      : Container(),
                   const Label(
                       text: "SOBRE O ANIMAL",
                       margin: EdgeInsets.only(top: 20),

@@ -6,6 +6,7 @@ class Design {
   static const white2 = Color.fromARGB(255, 247, 247, 247); // #f7f7f7
   static const black = Color.fromARGB(255, 0, 0, 0); // #000000
   static const primaryYellow = Color.fromARGB(255, 255, 211, 88); // #ffd358
+  static const darkYellow = Color.fromARGB(255, 247, 168, 0); // #f7a800
   static const lightYellow = Color.fromARGB(255, 254, 226, 155); // #fee29b
   static const lightBlue = Color.fromARGB(255, 136, 201, 191); // #88c9bf
   static const accentBlue = Color.fromARGB(255, 207, 233, 229); // #cfe9e5

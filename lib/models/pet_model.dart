@@ -8,7 +8,11 @@ class CreatePetModel {
     this.temperamento,
     this.saude,
     this.doencas,
-    this.exigencias,
+    this.exigenciasAdopt,
+    this.exigenciasFoster,
+    this.necessidades,
+    this.medicamento,
+    this.objetos,
     this.sobre,
     this.ownerId,
     this.isAdopt,
@@ -24,7 +28,11 @@ class CreatePetModel {
   final String temperamento;
   final String saude;
   final String doencas;
-  final String exigencias;
+  final String exigenciasAdopt;
+  final String exigenciasFoster;
+  final String necessidades;
+  final String medicamento;
+  final String objetos;
   final String sobre;
   final String ownerId;
   final bool isAdopt;

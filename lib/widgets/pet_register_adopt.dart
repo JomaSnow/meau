@@ -125,7 +125,7 @@ class _AdoptWidgetState extends State<AdoptWidget> {
       children: [
         const Label(
           text: "EXIGÊNCIAS PARA ADOÇÃO",
-          color: Design.primaryYellow,
+          color: Design.darkYellow,
         ),
         Wrap(
           children: exigenciasStringArray.map((elem) {
