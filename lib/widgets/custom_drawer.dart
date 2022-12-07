@@ -234,10 +234,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   onTap: () {
                     Navigator.pop(context);
                     currentUser != null
-                        ? Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const PetRegisterScreen()))
+                        ? Navigator.of(context)
+                            .pushReplacement(MaterialPageRoute(
+                                builder: (context) => PetRegisterScreen(
+                                      user: currentUser!,
+                                    )))
                         : Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const NoAccountScreen()));
                   },

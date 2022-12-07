@@ -26,11 +26,11 @@ class Button extends StatelessWidget {
       child: ElevatedButton(
         onPressed: disabled ? null : onPressed,
         style: ButtonStyle(
-          elevation: MaterialStateProperty.all<double>(5.0),
+          elevation: disabled ? null : MaterialStateProperty.all<double>(5.0),
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
               const EdgeInsets.symmetric(vertical: 12)),
           backgroundColor: disabled
-              ? MaterialStateProperty.all<Color>(color.withOpacity(0.3))
+              ? MaterialStateProperty.all<Color>(color.withOpacity(0.6))
               : MaterialStateProperty.all<Color>(color),
           overlayColor:
               MaterialStateProperty.resolveWith((Set<MaterialState> states) {
@@ -49,8 +49,10 @@ class Button extends StatelessWidget {
         child: Center(
             child: Text(
           value,
-          style:
-              TextStyle(color: fontColor, fontSize: 12, fontFamily: "Roboto"),
+          style: TextStyle(
+              color: disabled ? Design.lighterGray : fontColor,
+              fontSize: 12,
+              fontFamily: "Roboto"),
         )),
       ),
     );

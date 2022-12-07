@@ -1,8 +1,8 @@
 import 'package:app/util/design.dart';
 import 'package:flutter/material.dart';
 
-class Input extends StatelessWidget {
-  const Input({
+class InputText extends StatelessWidget {
+  const InputText({
     super.key,
     required this.controller,
     this.styleColor = Design.primaryYellow,

@@ -271,3 +271,65 @@ class UpdateValidations {
     return null;
   }
 }
+
+class PetRegisterValidations {
+  static String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Nome não pode ser vazio.';
+    }
+
+    if (value.length > 40) {
+      return 'Nome não pode exceder 40 caracteres.';
+    }
+
+    return null;
+  }
+
+  static String? validateDoenca(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Informe as doenças do animal.';
+    }
+
+    if (value.length > 50) {
+      return 'Doenças não podem exceder 50 caracteres.';
+    }
+
+    return null;
+  }
+
+  static String? validateMedicamento(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Informe o medicamento.';
+    }
+
+    if (value.length > 40) {
+      return 'Medicamento não pode exceder 40 caracteres.';
+    }
+
+    return null;
+  }
+
+  static String? validateObjetos(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Informe os objetos.';
+    }
+
+    if (value.length > 50) {
+      return 'Objetos não podem exceder 50 caracteres.';
+    }
+
+    return null;
+  }
+
+  static String? validateSobre(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Fale um pouco sobre o animal.';
+    }
+
+    if (value.length > 140) {
+      return 'História do animal não pode exceder 140 caracteres.';
+    }
+
+    return null;
+  }
+}
