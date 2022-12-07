@@ -1,4 +1,5 @@
 import 'package:app/util/design.dart';
+import 'package:app/util/validations.dart';
 import 'package:app/widgets/input_checkbox.dart';
 import 'package:app/widgets/input_text.dart';
 import 'package:app/widgets/label.dart';
@@ -112,6 +113,9 @@ class HelpWidgetState extends State<HelpWidget> {
             ? InputText(
                 controller: widget.medicamentoController,
                 placeholder: "Nome do medicamento",
+                validationAction: (String? value) {
+                  return PetRegisterValidations.validateMedicamento(value);
+                },
               )
             : Container(),
         InputSingleCheckbox(
@@ -145,6 +149,9 @@ class HelpWidgetState extends State<HelpWidget> {
             ? InputText(
                 controller: widget.objetosController,
                 placeholder: "Especifique o(s) objeto(s)",
+                validationAction: (String? value) {
+                  return PetRegisterValidations.validateObjetos(value);
+                },
               )
             : Container(),
       ],
