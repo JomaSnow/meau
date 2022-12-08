@@ -43,3 +43,48 @@ class CreatePetModel {
   final bool isHelp;
   final List<Uint8List?> imgArr;
 }
+
+class PetModel {
+  PetModel({
+    this.id = "",
+    this.nome = "",
+    this.especie = "",
+    this.sexo = "",
+    this.porte = "",
+    this.idade = "",
+    this.temperamento = "",
+    this.saude = "",
+    this.doencas = "",
+    this.exigenciasAdopt = "",
+    this.exigenciasFoster = "",
+    this.necessidades = "",
+    this.medicamento = "",
+    this.objetos = "",
+    this.sobre = "",
+    this.ownerId = "",
+    this.isAdopt = false,
+    this.isFoster = false,
+    this.isHelp = false,
+  });
+
+  String id;
+  String nome;
+  String especie;
+  String sexo;
+  String porte;
+  String idade;
+  String temperamento;
+  String saude;
+  String doencas;
+  String exigenciasAdopt;
+  String exigenciasFoster;
+  String necessidades;
+  String medicamento;
+  String objetos;
+  String sobre;
+  String ownerId;
+  bool isAdopt;
+  bool isFoster;
+  bool isHelp;
+  List<Uint8List?>? imgArr;
+}
