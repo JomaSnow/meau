@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:app/api/user_functions.dart';
 import 'package:app/models/pet_model.dart';
+import 'package:app/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -59,6 +61,7 @@ Future<List<PetModel>> getAllPets() async {
 
     for (var doc in docsRef.docs) {
       PetModel pet = PetModel();
+      UserModel owner = UserModel();
 
       pet.id = doc.id;
       pet.nome = doc.get("nome");
@@ -81,6 +84,10 @@ Future<List<PetModel>> getAllPets() async {
       pet.isHelp = doc.get("isHelp");
       pet.imgArr = [];
 
+      owner = await getUser(pet.ownerId);
+
+      pet.userAddress = "${owner.cidade} - ${owner.estado}";
+
       ListResult images = await FirebaseStorage.instance
           .ref()
           .child("images/pets/${doc.id}/")
@@ -95,10 +102,6 @@ Future<List<PetModel>> getAllPets() async {
     }
   } catch (e) {
     log(e.toString());
-  }
-
-  for (var pet in pets) {
-    log(pet.id);
   }
 
   return pets;
@@ -117,6 +120,7 @@ Future<List<PetModel>> getAllPetsForAdoption() async {
 
     for (var doc in docsRef.docs) {
       PetModel pet = PetModel();
+      UserModel owner = UserModel();
 
       pet.id = doc.id;
       pet.nome = doc.get("nome");
@@ -139,6 +143,10 @@ Future<List<PetModel>> getAllPetsForAdoption() async {
       pet.isHelp = doc.get("isHelp");
       pet.imgArr = [];
 
+      owner = await getUser(pet.ownerId);
+
+      pet.userAddress = "${owner.cidade} - ${owner.estado}";
+
       ListResult images = await FirebaseStorage.instance
           .ref()
           .child("images/pets/${doc.id}/")
@@ -153,10 +161,6 @@ Future<List<PetModel>> getAllPetsForAdoption() async {
     }
   } catch (e) {
     log(e.toString());
-  }
-
-  for (var pet in pets) {
-    log(pet.id);
   }
 
   return pets;
@@ -175,6 +179,7 @@ Future<List<PetModel>> getAllPetsForFoster() async {
 
     for (var doc in docsRef.docs) {
       PetModel pet = PetModel();
+      UserModel owner = UserModel();
 
       pet.id = doc.id;
       pet.nome = doc.get("nome");
@@ -197,6 +202,10 @@ Future<List<PetModel>> getAllPetsForFoster() async {
       pet.isHelp = doc.get("isHelp");
       pet.imgArr = [];
 
+      owner = await getUser(pet.ownerId);
+
+      pet.userAddress = "${owner.cidade} - ${owner.estado}";
+
       ListResult images = await FirebaseStorage.instance
           .ref()
           .child("images/pets/${doc.id}/")
@@ -211,10 +220,6 @@ Future<List<PetModel>> getAllPetsForFoster() async {
     }
   } catch (e) {
     log(e.toString());
-  }
-
-  for (var pet in pets) {
-    log(pet.id);
   }
 
   return pets;
@@ -233,6 +238,7 @@ Future<List<PetModel>> getAllPetsForHelp() async {
 
     for (var doc in docsRef.docs) {
       PetModel pet = PetModel();
+      UserModel owner = UserModel();
 
       pet.id = doc.id;
       pet.nome = doc.get("nome");
@@ -255,6 +261,10 @@ Future<List<PetModel>> getAllPetsForHelp() async {
       pet.isHelp = doc.get("isHelp");
       pet.imgArr = [];
 
+      owner = await getUser(pet.ownerId);
+
+      pet.userAddress = "${owner.cidade} - ${owner.estado}";
+
       ListResult images = await FirebaseStorage.instance
           .ref()
           .child("images/pets/${doc.id}/")
@@ -269,10 +279,6 @@ Future<List<PetModel>> getAllPetsForHelp() async {
     }
   } catch (e) {
     log(e.toString());
-  }
-
-  for (var pet in pets) {
-    log(pet.id);
   }
 
   return pets;
