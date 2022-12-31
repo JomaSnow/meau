@@ -1,3 +1,4 @@
+import 'package:app/models/user_model.dart';
 import 'package:app/screens/my_pets_screen.dart';
 import 'package:app/util/design.dart';
 import 'package:app/widgets/button.dart';
@@ -7,7 +8,12 @@ import 'package:app/widgets/page_title.dart';
 import 'package:flutter/material.dart';
 
 class PetRegisterSuccessScreen extends StatelessWidget {
-  const PetRegisterSuccessScreen({super.key});
+  const PetRegisterSuccessScreen({
+    super.key,
+    required this.user,
+  });
+
+  final UserModel user;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +48,9 @@ class PetRegisterSuccessScreen extends StatelessWidget {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const MyPetsScreen(),
+                      builder: (context) => MyPetsScreen(
+                        user: user,
+                      ),
                     ));
               }),
         )

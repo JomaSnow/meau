@@ -66,6 +66,7 @@ class PetModel {
     this.isFoster = false,
     this.isHelp = false,
     this.userAddress = "",
+    this.hasInterest = false,
   });
 
   String id;
@@ -89,4 +90,5 @@ class PetModel {
   bool isHelp;
   List<Uint8List?>? imgArr;
   String userAddress;
+  bool hasInterest;
 }

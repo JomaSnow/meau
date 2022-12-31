@@ -374,7 +374,7 @@ class _PetRegisterScreenState extends State<PetRegisterScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const PetRegisterSuccessScreen(),
+              builder: (context) => PetRegisterSuccessScreen(user: widget.user),
             ));
       }
     }

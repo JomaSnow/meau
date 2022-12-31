@@ -185,10 +185,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             title: "Meus pets",
                             onTap: () {
                               Navigator.pop(context);
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const MyPetsScreen()));
+                              Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(
+                                      builder: (context) => MyPetsScreen(
+                                            user: currentUser!,
+                                          )));
                             },
                           ),
                           DrawerItem(

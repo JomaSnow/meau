@@ -8,9 +8,11 @@ class PetCard extends StatelessWidget {
   const PetCard({
     super.key,
     required this.pet,
+    this.isOwner = false,
   });
 
   final PetModel pet;
+  final bool isOwner;
   final TextStyle cardInfo = const TextStyle(
       color: Design.darkerGray, fontSize: 12, fontFamily: "Roboto");
 
@@ -37,9 +39,9 @@ class PetCard extends StatelessWidget {
       child: Column(children: [
         Container(
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
-          decoration: const BoxDecoration(
-            color: Design.lightYellow,
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            color: isOwner ? Design.accentBlue : Design.lightYellow,
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(4),
               topRight: Radius.circular(4),
             ),
@@ -55,16 +57,31 @@ class PetCard extends StatelessWidget {
                     fontFamily: "Roboto",
                     fontWeight: FontWeight.w500),
               ),
-              IconButton(
-                onPressed: () {
-                  log("toggle favorite");
-                },
-                icon: const Icon(
-                  Icons.favorite_outline,
-                  color: Design.darkerGray,
-                  size: 24,
-                ),
-              ),
+              isOwner
+                  ? pet.hasInterest
+                      ? IconButton(
+                          onPressed: () {
+                            log("toggle interest");
+                          },
+                          icon: const Icon(
+                            Icons.error,
+                            color: Design.darkerGray,
+                            size: 24,
+                          ),
+                        )
+                      : const SizedBox(
+                          height: 42,
+                        )
+                  : IconButton(
+                      onPressed: () {
+                        log("toggle favorite");
+                      },
+                      icon: const Icon(
+                        Icons.favorite_outline,
+                        color: Design.darkerGray,
+                        size: 24,
+                      ),
+                    ),
             ],
           ),
         ),
@@ -80,26 +97,65 @@ class PetCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    pet.sexo.toUpperCase(),
-                    style: cardInfo,
-                  ),
-                  Text(
-                    pet.idade.toUpperCase(),
-                    style: cardInfo,
-                  ),
-                  Text(
-                    pet.porte.toUpperCase(),
-                    style: cardInfo,
-                  ),
-                ],
+                mainAxisAlignment: isOwner
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.spaceBetween,
+                children: isOwner
+                    ? [
+                        Text(
+                          "0 NOVOS INTERESSADOS",
+                          style: cardInfo,
+                        )
+                      ]
+                    : [
+                        Text(
+                          pet.sexo.toUpperCase(),
+                          style: cardInfo,
+                        ),
+                        Text(
+                          pet.idade.toUpperCase(),
+                          style: cardInfo,
+                        ),
+                        Text(
+                          pet.porte.toUpperCase(),
+                          style: cardInfo,
+                        ),
+                      ],
               ),
-              Text(
-                pet.userAddress.toUpperCase(),
-                style: cardInfo,
-              ),
+              isOwner
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        pet.isAdopt && !pet.isHelp
+                            ? Text(
+                                "ADOÇÃO",
+                                style: cardInfo,
+                              )
+                            : pet.isFoster && !pet.isHelp
+                                ? Text(
+                                    "APADRINHAMENTO",
+                                    style: cardInfo,
+                                  )
+                                : pet.isAdopt && pet.isHelp
+                                    ? Text(
+                                        "ADOÇÃO | AJUDA",
+                                        style: cardInfo,
+                                      )
+                                    : pet.isFoster && pet.isHelp
+                                        ? Text(
+                                            "APADRINHAMENTO | AJUDA",
+                                            style: cardInfo,
+                                          )
+                                        : Text(
+                                            "AJUDA",
+                                            style: cardInfo,
+                                          )
+                      ],
+                    )
+                  : Text(
+                      pet.userAddress.toUpperCase(),
+                      style: cardInfo,
+                    ),
             ],
           ),
         ),

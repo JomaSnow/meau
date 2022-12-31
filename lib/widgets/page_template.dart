@@ -14,7 +14,7 @@ class PageTemplate extends StatelessWidget {
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.showDrawer = true,
     this.title = "",
-    this.appBarBackgroundColor = Design.accentBlue,
+    this.appBarBackgroundColor = Design.lightBlue,
     this.appBarIconsColor = Design.darkerGray,
     this.appBarLeadingAction = _defaultLeadingAction,
     this.appBarLeadingIcon,

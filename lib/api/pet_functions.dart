@@ -166,6 +166,65 @@ Future<List<PetModel>> getAllPetsForAdoption() async {
   return pets;
 }
 
+Future<List<PetModel>> getAllPetsByUser(String uid) async {
+  List<PetModel> pets = [];
+  const oneMegaByte = 1024 * 1024;
+
+  try {
+    QuerySnapshot<Map<String, dynamic>> docsRef = await FirebaseFirestore
+        .instance
+        .collection("pets")
+        .where("ownerId", isEqualTo: uid)
+        .get();
+
+    for (var doc in docsRef.docs) {
+      PetModel pet = PetModel();
+      UserModel owner = UserModel();
+
+      pet.id = doc.id;
+      pet.nome = doc.get("nome");
+      pet.especie = doc.get("especie");
+      pet.sexo = doc.get("sexo");
+      pet.porte = doc.get("porte");
+      pet.idade = doc.get("idade");
+      pet.temperamento = doc.get("temperamento");
+      pet.saude = doc.get("saude");
+      pet.doencas = doc.get("doencas");
+      pet.exigenciasAdopt = doc.get("exigenciasAdopt");
+      pet.exigenciasFoster = doc.get("exigenciasFoster");
+      pet.necessidades = doc.get("necessidades");
+      pet.medicamento = doc.get("medicamento");
+      pet.objetos = doc.get("objetos");
+      pet.sobre = doc.get("sobre");
+      pet.ownerId = doc.get("ownerId");
+      pet.isAdopt = doc.get("isAdopt");
+      pet.isFoster = doc.get("isFoster");
+      pet.isHelp = doc.get("isHelp");
+      pet.imgArr = [];
+
+      owner = await getUser(pet.ownerId);
+
+      pet.userAddress = "${owner.cidade} - ${owner.estado}";
+
+      ListResult images = await FirebaseStorage.instance
+          .ref()
+          .child("images/pets/${doc.id}/")
+          .listAll();
+
+      log(images.items.toString());
+      for (var img in images.items) {
+        pet.imgArr!.add(await img.getData(4 * oneMegaByte));
+      }
+
+      pets.add(pet);
+    }
+  } catch (e) {
+    log(e.toString());
+  }
+
+  return pets;
+}
+
 Future<List<PetModel>> getAllPetsForFoster() async {
   List<PetModel> pets = [];
   const oneMegaByte = 1024 * 1024;
